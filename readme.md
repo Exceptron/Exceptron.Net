@@ -11,11 +11,10 @@ To install Exceptron.Client, run the following command in the Package Manager Co
 `PM> Install-Package Exceptron.Client -Pre`
 
 ## Usage ##
-```csharp
 
-	var exceptronClient = new ExceptronClient();
+	TODO
 	
-```
+
 
 ## Configuration ##
 
@@ -27,8 +26,14 @@ To install Exceptron.Client, run the following command in the Package Manager Co
 
 
 ### Configuring the Client Using Configuration File ###
+	TODO
+
+
 
 ### Configuring the Client Programatically ###
+	TODO
+
+
 
 
 
