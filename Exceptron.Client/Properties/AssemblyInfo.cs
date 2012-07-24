@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Exceptron.Client")]
-[assembly: AssemblyDescription("In-cloud exception aggregation and analytics.")]
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyDescription("Nlog target for exceptron")]
 [assembly: AssemblyCompany("Exceptron Solutions Inc.")]
 [assembly: AssemblyProduct("Exceptron.Client")]
 [assembly: AssemblyCopyright("Copyright © 2012")]
