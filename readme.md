@@ -4,7 +4,7 @@
 
 ## Download ##
 
-You can download the binary version of Exceptron.Client from nuget [here](http://nuget.org/packages/exceptron.client "here")
+You can download the binary version of `Exceptron.Client` from nuget [here](http://nuget.org/packages/exceptron.client "here")
 
 To install Exceptron.Client, run the following command in the Package Manager Console
 

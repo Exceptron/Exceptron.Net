@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Reflection;
 using System.Threading;
 using Exceptron.Client.Configuration;
@@ -9,7 +8,7 @@ using Exceptron.Client.Message;
 
 namespace Exceptron.Client
 {
-    public class ExceptionClient
+    public class ExceptionClient : IExceptionClient
     {
         internal IRestClient RestClient { get; set; }
 
