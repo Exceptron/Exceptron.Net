@@ -36,4 +36,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("Exceptron.Client.Tests")]
 [assembly: InternalsVisibleTo("Exceptron.Api.v1.Tests")]
+[assembly: InternalsVisibleTo("Exceptron.Rush")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
