@@ -71,7 +71,7 @@ exceptron client can be configured using application config files `web.config or
         </configSections>
         <exceptron throwExceptions="true" apiKey="ABCD" includeMachineName="true"/>
 </configuration>
-    
+```    
 
 
 ### Configuring the Client Programmatically ###
