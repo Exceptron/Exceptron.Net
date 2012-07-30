@@ -36,8 +36,8 @@ namespace Exceptron.Client.Tests.RestClientTests
         public void bad_token_should_throw_401()
         {
             _exceptionReport.ap = "CB230C312E5C4FF38B4FB9644B05EXXX";
-            var exception = Assert.Throws<WebException>(() => _restClient.Put<ExceptionResponse>(Url, _exceptionReport));
-
+            var exception = Assert.Throws<ExceptronApiException>(() => _restClient.Put<ExceptionResponse>(Url, _exceptionReport));
+            
             ((HttpWebResponse)(exception.Response)).StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
@@ -45,9 +45,9 @@ namespace Exceptron.Client.Tests.RestClientTests
         public void missing_stack_should_throw_400()
         {
             _exceptionReport.stk = null;
-            var exception = Assert.Throws<WebException>(() => _restClient.Put<ExceptionResponse>(Url, _exceptionReport));
+            var exception = Assert.Throws<ExceptronApiException>(() => _restClient.Put<ExceptionResponse>(Url, _exceptionReport));
 
-            ((HttpWebResponse)(exception.Response)).StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            exception.Response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Test]

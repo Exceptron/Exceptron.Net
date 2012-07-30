@@ -13,14 +13,14 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
     [TestFixture]
     public class ExceptionClient_SuccessFixture : ClientTest
     {
-        private ExceptionClient _clinet;
+        private ExceptronClient _clinet;
         private Mock<IRestClient> _fakeRestClient;
 
         [SetUp]
         public void Setup()
         {
             _fakeRestClient = new Mock<IRestClient>();
-            _clinet = new ExceptionClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
+            _clinet = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
         }
 
 

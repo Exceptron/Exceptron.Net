@@ -12,7 +12,7 @@ namespace Exceptron.Client
         public TResponse Put<TResponse>(string url, object content) where TResponse : class ,new()
         {
 
-            if(content == null)
+            if (content == null)
                 throw new ArgumentNullException("content can not be null", "content");
 
             if (string.IsNullOrEmpty(url))
@@ -33,47 +33,33 @@ namespace Exceptron.Client
             var dataStream = request.GetRequestStream();
             dataStream.Write(bytes, 0, bytes.Length);
             dataStream.Close();
-            var webResponse = request.GetResponse();
 
+            string responseContent = string.Empty;
+
+            try
+            {
+                var webResponse = request.GetResponse();
+                responseContent = ReadResponse(webResponse);
+                var response = JSON.Instance.ToObject<TResponse>(responseContent);
+
+                return response;
+            }
+            catch (WebException e)
+            {
+                responseContent = ReadResponse(e.Response);
+                throw new ExceptronApiException(e, responseContent);
+            }
+            finally
+            {
+                Trace.WriteLine(responseContent);
+            }
+        }
+
+
+        public static string ReadResponse(WebResponse webResponse)
+        {
             var responseStream = new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding(1252));
-            var responseString = responseStream.ReadToEnd();
-
-            Trace.WriteLine(responseString);
-            var response = JSON.Instance.ToObject<TResponse>(responseString);
-
-            return response;
-
-            /*   try
-            {
-                var dataStream = request.GetRequestStream();
-                dataStream.Write(bytes, 0, bytes.Length);
-                dataStream.Close();
-                webResponse = request.GetResponse();
-            }
-            catch (WebException ex)
-            {
-                Trace.WriteLine("An Error has occurred while Doing HTTP PUT. " + ex);
-                webResponse = ex.Response;
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("An Error has occurred while Doing HTTP PUT. " + ex);
-            }
-
-            var response = new TResponse();
-
-            if (webResponse != null && webResponse.ContentType.Contains("json"))
-            {
-                var responseStream = new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding(1252));
-                var responseString = responseStream.ReadToEnd();
-
-                Trace.WriteLine(responseString);
-                response = JSON.Instance.ToObject<TResponse>(responseString);
-            }
-
-            if (response == null) response = new TResponse();
-
-            return response;*/
+            return responseStream.ReadToEnd();
         }
     }
 }

@@ -35,6 +35,13 @@ namespace Exceptron.Client.Configuration
         [ConfigurationProperty("apiKey")]
         public string ApiKey { get; set; }
 
+
+        /// <summary>
+        /// If the machine name should be attached to the exception report
+        /// </summary>
+        /// <remarks>Machine name can be usefull in webfarm enviroments when multiple
+        /// servers are running the same app and the issue could be machine specific.
+        /// Hoewever, You might want to disable this feature for privacy reasons.</remarks>
         [ConfigurationProperty("includeMachineName", DefaultValue = true)]
         public bool IncludeMachineName { get; set; }
 

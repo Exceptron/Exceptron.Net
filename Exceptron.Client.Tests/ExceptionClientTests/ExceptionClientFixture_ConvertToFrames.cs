@@ -35,7 +35,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
             }
             catch (Exception e)
             {
-                frames = ExceptionClient.ConvertToFrames(e);
+                frames = ExceptronClient.ConvertToFrames(e);
             }
 
             AssertOnFrames(frames);
@@ -56,7 +56,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
             }
             catch (Exception e)
             {
-                frames = ExceptionClient.ConvertToFrames(e);
+                frames = ExceptronClient.ConvertToFrames(e);
             }
 
             AssertOnFrames(frames);

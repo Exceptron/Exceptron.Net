@@ -8,7 +8,7 @@ using Exceptron.Client.Message;
 
 namespace Exceptron.Client
 {
-    public class ExceptionClient : IExceptionClient
+    public class ExceptronClient : IExceptronClient
     {
         internal IRestClient RestClient { get; set; }
 
@@ -50,16 +50,16 @@ namespace Exceptron.Client
 
 
         /// <summary>
-        /// Creates a new instance of <see cref="ExceptionClient"/>
+        /// Creates a new instance of <see cref="ExceptronClient"/>
         /// Loads <see cref="ExceptronConfiguration"/> from application config file.
         /// </summary>
-        public ExceptionClient()
+        public ExceptronClient()
             : this(ExceptronConfiguration.ReadConfig())
         {
         }
 
         /// <param name="exceptronConfiguration">Exceptron client configuration</param>
-        public ExceptionClient(ExceptronConfiguration exceptronConfiguration)
+        public ExceptronClient(ExceptronConfiguration exceptronConfiguration)
         {
             if (exceptronConfiguration == null)
                 throw new ArgumentNullException("exceptronConfiguration");
@@ -72,6 +72,40 @@ namespace Exceptron.Client
             RestClient = new RestClient();
 
             SetApplicationVersion();
+        }
+
+        /// <summary>
+        /// Submit an exception to Exceptron Servers.
+        /// </summary>
+        /// <param name="exception">Exception that is being reported</param>
+        /// <param name="component" 
+        /// example="DataAccess, Configuration, Registration, etc." 
+        /// remarks="It is common to use the logger name that was used to log the exception as the component.">Component that experianced this exception.</param>
+        /// <param name="severity">Severity of the exception being reported</param>
+        /// <param name="message" 
+        /// example="Something went wrong while checking for application updates.">Any message that should be attached to this exceptions</param>
+        /// <param name="userId"
+        /// remarks="This Id does not have to be tied to the user's identity. 
+        /// You can use a system generated unique ID such as GUID. 
+        /// This field is used to report how many unique users are experiencing an error." 
+        /// example="
+        /// 62E5C8EF-0CA2-43AB-B278-FC6994F776ED
+        /// Timmy@aol.com
+        /// 26437
+        /// ">ID that will uniquely identify the user</param>
+        /// <returns></returns>
+        public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity, string message = null, string userId = null)
+        {
+            var exceptionData = new ExceptionData
+                                    {
+                                        Exception = exception,
+                                        Component = component,
+                                        Severity = severity,
+                                        Message = message,
+                                        UserId = userId
+                                    };
+
+            return SubmitException(exceptionData);
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace Exceptron.Client
         public Exception Exception { get; set; }
 
         /// <summary>
-        /// Component that caused this error.
+        /// Component that experianced this exception.
         /// </summary>
         /// <remarks>
         /// It is common to use the logger name that was used to log the exception as the component.

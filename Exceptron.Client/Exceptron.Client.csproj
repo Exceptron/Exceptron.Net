@@ -62,8 +62,9 @@
   <ItemGroup>
     <Compile Include="Configuration\ExceptronConfiguration.cs" />
     <Compile Include="ExceptionData.cs" />
-    <Compile Include="ExceptionClient.cs" />
-    <Compile Include="IExceptionClient.cs" />
+    <Compile Include="ExceptronClient.cs" />
+    <Compile Include="ExceptronApiException.cs" />
+    <Compile Include="IExceptronClient.cs" />
     <Compile Include="Message\ExceptionResponse.cs" />
     <Compile Include="ExceptionSeverity.cs" />
     <Compile Include="IRestClient.cs" />

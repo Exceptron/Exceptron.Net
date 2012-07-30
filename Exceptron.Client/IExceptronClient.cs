@@ -3,7 +3,7 @@ using Exceptron.Client.Message;
 
 namespace Exceptron.Client
 {
-    public interface IExceptionClient
+    public interface IExceptronClient
     {
         /// <summary>
         /// Client Configuration

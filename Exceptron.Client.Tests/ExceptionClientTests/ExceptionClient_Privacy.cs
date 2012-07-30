@@ -13,7 +13,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
     [TestFixture]
     public class ExceptionClient_Privacy : ClientTest
     {
-        private ExceptionClient _clinet;
+        private ExceptronClient _clinet;
         private Mock<IRestClient> _fakeRestClient;
         private ExceptionReport _submitedReport;
 
@@ -25,7 +25,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
                         .Setup(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.IsAny<ExceptionReport>()))
                         .Callback<string, object>((target, report) => _submitedReport = (ExceptionReport)report);
 
-            _clinet = new ExceptionClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
+            _clinet = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
         }
 
 

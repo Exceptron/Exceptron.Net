@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptron.Client", "Exceptron.Client\Exceptron.Client.csproj", "{B1784698-592E-4132-BDFA-9817409E3A96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptron.Client.Tests", "Exceptron.Client.Tests\Exceptron.Client.Tests.csproj", "{3BA1145B-B6DF-4E5D-A395-E06F562CDF16}"
@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0FA52A
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptron.Client.Sample", "Exceptron.Client.Sample\Exceptron.Client.Sample.csproj", "{FAD75709-0ED2-4BD4-A86D-FCD8BE39DECB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,18 +20,24 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B1784698-592E-4132-BDFA-9817409E3A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1784698-592E-4132-BDFA-9817409E3A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1784698-592E-4132-BDFA-9817409E3A96}.Pilot|Any CPU.ActiveCfg = Pilot|Any CPU
-		{B1784698-592E-4132-BDFA-9817409E3A96}.Pilot|Any CPU.Build.0 = Pilot|Any CPU
-		{B1784698-592E-4132-BDFA-9817409E3A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1784698-592E-4132-BDFA-9817409E3A96}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3BA1145B-B6DF-4E5D-A395-E06F562CDF16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3BA1145B-B6DF-4E5D-A395-E06F562CDF16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BA1145B-B6DF-4E5D-A395-E06F562CDF16}.Pilot|Any CPU.ActiveCfg = Pilot|Any CPU
 		{3BA1145B-B6DF-4E5D-A395-E06F562CDF16}.Pilot|Any CPU.Build.0 = Pilot|Any CPU
 		{3BA1145B-B6DF-4E5D-A395-E06F562CDF16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BA1145B-B6DF-4E5D-A395-E06F562CDF16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1784698-592E-4132-BDFA-9817409E3A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1784698-592E-4132-BDFA-9817409E3A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1784698-592E-4132-BDFA-9817409E3A96}.Pilot|Any CPU.ActiveCfg = Pilot|Any CPU
+		{B1784698-592E-4132-BDFA-9817409E3A96}.Pilot|Any CPU.Build.0 = Pilot|Any CPU
+		{B1784698-592E-4132-BDFA-9817409E3A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1784698-592E-4132-BDFA-9817409E3A96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAD75709-0ED2-4BD4-A86D-FCD8BE39DECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAD75709-0ED2-4BD4-A86D-FCD8BE39DECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAD75709-0ED2-4BD4-A86D-FCD8BE39DECB}.Pilot|Any CPU.ActiveCfg = Release|Any CPU
+		{FAD75709-0ED2-4BD4-A86D-FCD8BE39DECB}.Pilot|Any CPU.Build.0 = Release|Any CPU
+		{FAD75709-0ED2-4BD4-A86D-FCD8BE39DECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAD75709-0ED2-4BD4-A86D-FCD8BE39DECB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

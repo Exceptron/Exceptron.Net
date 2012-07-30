@@ -11,7 +11,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
     [TestFixture]
     public class ExceptionClient_FailureFixture : ClientTest
     {
-        private ExceptionClient _clinet;
+        private ExceptronClient _clinet;
         private Mock<IRestClient> _fakeRestClient;
         private ExceptionData _validException;
 
@@ -19,7 +19,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
         public void Setup()
         {
             _fakeRestClient = new Mock<IRestClient>();
-            _clinet = new ExceptionClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
+            _clinet = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
             _validException = new ExceptionData
                 {
                     Exception = new TestException(),
@@ -37,7 +37,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
         public void should_throw_if_new_instance_is_created_without_api_key(string apiKey)
         {
             Assert.Throws<ArgumentException>(() =>
-                                             new ExceptionClient(new ExceptronConfiguration
+                                             new ExceptronClient(new ExceptronConfiguration
                                                  {
                                                      ApiKey = apiKey
                                                  }));
@@ -46,7 +46,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
         [Test]
         public void should_throw_if_configuration_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => new ExceptionClient(null));
+            Assert.Throws<ArgumentNullException>(() => new ExceptronClient(null));
         }
 
         [Test]
