@@ -41,7 +41,6 @@ namespace Exceptron.Client.Tests.IntegerationTests
             _exceptionClient.Configuration.Host = url;
             _exceptionClient.Configuration.ThrowExceptions = false;
 
-
             ExceptionResponse response = _exceptionClient.SubmitException(FakeExceptionData);
 
             AssertFailedResponse(response);

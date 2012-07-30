@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exceptron.Client.Configuration;
+﻿using Exceptron.Client.Configuration;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -29,6 +25,20 @@ namespace Exceptron.Client.Tests.ConfigurationTests
         {
             ExceptronConfiguration.ReadConfig("exceptron_noapikey").Should().NotBeNull();
             ExceptronConfiguration.ReadConfig("exceptron_noapikey").ApiKey.Should().BeNull();
+        }
+
+
+        [Test]
+        public void url_should_point_to_correct_address()
+        {
+            ExceptronConfiguration.ReadConfig().Host.Should().StartWith("https://api.exceptron.com/v");
+        }
+
+
+        [Test]
+        public void config_should_have_proper_default_values()
+        {
+            ExceptronConfiguration.ReadConfig().IncludeMachineName.Should().Be(true);
         }
 
     }

@@ -107,9 +107,28 @@ namespace Exceptron.Client
                 report.env = Enviroment;
                 report.msg = exceptionData.Message;
                 report.cul = Thread.CurrentThread.CurrentCulture.Name;
-                report.os = Environment.OSVersion.VersionString;
                 report.sv = (int)exceptionData.Severity;
-                report.hn = Environment.MachineName;
+
+                try
+                {
+                    report.os = Environment.OSVersion.VersionString;
+                }
+                catch (Exception)
+                {
+                    if (Configuration.ThrowExceptions) throw;
+                }
+
+                if (Configuration.IncludeMachineName)
+                {
+                    try
+                    {
+                        report.hn = Environment.MachineName;
+                    }
+                    catch (Exception)
+                    {
+                        if (Configuration.ThrowExceptions) throw;
+                    }
+                }
 
                 var response = RestClient.Put<ExceptionResponse>(Configuration.Host, report);
 

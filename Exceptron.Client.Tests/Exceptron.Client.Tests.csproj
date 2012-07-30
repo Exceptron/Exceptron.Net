@@ -62,9 +62,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Text, Version=3.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.8.3\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.2\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationTests\ExceptronConfigurationFixture.cs" />
     <Compile Include="ClientTest.cs" />
+    <Compile Include="ExceptionClientTests\ExceptionClient_Privacy.cs" />
     <Compile Include="ExceptionClientTests\ExceptionClient_SuccessFixture.cs" />
     <Compile Include="RestClientTests\RestClientFixture.cs" />
     <Compile Include="ExceptionClientTests\ExceptionClient_FailureFixture.cs" />

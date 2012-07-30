@@ -104,14 +104,6 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
             MayThrow<ArgumentException>(() => _clinet.SubmitException(error), throwsExceptions);
         }
 
-
-        [Test]
-        public void url_should_point_to_correct_address()
-        {
-            _clinet.Configuration.Host.Should().StartWith("https://api.exceptron.com/v");
-        }
-
-
         private static T MayThrow<T>(TestDelegate code, bool shouldThrow) where T : Exception
         {
             if (shouldThrow)
