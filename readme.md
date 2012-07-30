@@ -12,17 +12,19 @@ To install Exceptron.Client, run the following command in the Package Manager Co
 
 ## Usage ##
 
-    //Create a new instance of exceptron client.
-    var exceptron = new ExceptronClient();
+```c#
+//Create a new instance of exceptron client.
+var exceptron = new ExceptronClient();
 
-    try
-    {
-         //Code that could cause an exceptions
-    }
-    catch (Exception e)
-    {
-        exceptron.SubmitException(e, "Main", ExceptionSeverity.Fatal, "Couldn't call the broken method", "User1");
-    }
+try
+{
+	//Code that could cause an exceptions
+}
+catch (Exception e)
+{
+	exceptron.SubmitException(e, "Main", ExceptionSeverity.Fatal, "Couldn't call the broken method", "User1");
+}
+```
     
 *Please note that Client initialization can be done once per application life cycle and reused to submit subsequent exceptions. There is no need to create a new instance for each exception.*
 
@@ -61,29 +63,33 @@ Machine name can be useful in webfarm enviroments when multiple servers are runn
 ### Configuring the Client Using Configuration File ###
 exceptron client can be configured using application config files `web.config or app.config` using the following schema
 
-    <?xml version="1.0" encoding="utf-8" ?>
-    <configuration>
-        <configSections>
-            <section name="exceptron" type="Exceptron.Client.Configuration.ExceptronConfiguration,Exceptron.Client" />
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<configSections>
+    	<section name="exceptron" type="Exceptron.Client.Configuration.ExceptronConfiguration,Exceptron.Client" />
         </configSections>
-        <exceptron throwExceptions="true" apiKey="ABCD" includeMachineName="true" />
-    </configuration>
+        <exceptron throwExceptions="true" apiKey="ABCD" includeMachineName="true"/>
+</configuration>
     
 
 
 ### Configuring the Client Programmatically ###
 By default exceptron client tries to load configuration values from the config file. if config section is not defined, or any of the values are missing a default value will be assigned. However all these values can be overwrite on runtime using the following syntax.
 
-    //Create a new configuration instance
-     var myConfig = new ExceptronConfiguration
-           {
-            ApiKey = "YOUR_API_TOKE",
-            IncludeMachineName = true,
-            ThrowExceptions = true
-        };
+```c#
+//Create a new configuration instance
+var myConfig = new ExceptronConfiguration
+	{
+    	ApiKey = "YOUR_API_TOKE",
+        IncludeMachineName = true,
+        ThrowExceptions = true
+    };
 
-    //Now you can create the client using the configuration object
-    var exceptron = new ExceptronClient(myConfig);
+//Now you can create the client using the configuration object
+var exceptron = new ExceptronClient(myConfig);
+```
+ 
 
     
 
