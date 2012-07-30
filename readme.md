@@ -68,8 +68,8 @@ exceptron client can be configured using application config files `web.config or
 <configuration>
 	<configSections>
     	<section name="exceptron" type="Exceptron.Client.Configuration.ExceptronConfiguration,Exceptron.Client" />
-        </configSections>
-        <exceptron throwExceptions="true" apiKey="ABCD" includeMachineName="true"/>
+    </configSections>
+    <exceptron throwExceptions="true" apiKey="ABCD" includeMachineName="true"/>
 </configuration>
 ```    
 
