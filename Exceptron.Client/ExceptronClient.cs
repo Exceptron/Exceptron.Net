@@ -11,7 +11,7 @@ namespace Exceptron.Client
 {
     public class ExceptronClient : IExceptronClient
     {
-        internal IRestClient RestClient { get; set; }
+        internal IRestClient RestClient { private get; set; }
 
         /// <summary>
         /// Version of Client
@@ -113,14 +113,7 @@ namespace Exceptron.Client
         {
             try
             {
-                if (string.IsNullOrEmpty(Configuration.ApiKey))
-                    throw new InvalidOperationException("ApiKey has not been provided for this client.");
-
-                if (exceptionData == null)
-                    throw new ArgumentNullException("exceptionData");
-
-                if (exceptionData.Exception == null)
-                    throw new ArgumentException("ExceptionData.Exception Cannot be null.", "exceptionData");
+                ValidateState(exceptionData);
 
                 var report = new ExceptionReport();
 
@@ -136,51 +129,12 @@ namespace Exceptron.Client
                 report.cmp = exceptionData.Component;
                 report.uid = exceptionData.UserId;
                 report.msg = exceptionData.Message;
-                report.cul = Thread.CurrentThread.CurrentCulture.Name;
                 report.sv = (int)exceptionData.Severity;
 
-                if (exceptionData.HttpContext == null)
-                {
-                    exceptionData.HttpContext = HttpContext.Current;
-                }
+                SetHttpInfo(exceptionData, report);
+                SetEnviromentInfo(report);
 
-                if (exceptionData.HttpContext != null)
-                {
-                    try
-                    {
-                        report.url = exceptionData.HttpContext.Request.Url.ToString();
-                        report.ua = exceptionData.HttpContext.Request.Browser.Browser;
-                        report.sc = exceptionData.HttpContext.Response.StatusCode;
-                    }
-                    catch (Exception)
-                    {
-                        if (Configuration.ThrowExceptions) throw;
-                    }
-                }
-                try
-                {
-                    report.os = Environment.OSVersion.VersionString;
-                }
-                catch (Exception)
-                {
-                    if (Configuration.ThrowExceptions) throw;
-                }
-
-                if (Configuration.IncludeMachineName)
-                {
-                    try
-                    {
-                        report.hn = Environment.MachineName;
-                    }
-                    catch (Exception)
-                    {
-                        if (Configuration.ThrowExceptions) throw;
-                    }
-                }
-
-                var response = RestClient.Put<ExceptionResponse>(Configuration.Host, report);
-
-                return response;
+                return RestClient.Put<ExceptionResponse>(Configuration.Host, report);
             }
             catch (Exception e)
             {
@@ -190,10 +144,73 @@ namespace Exceptron.Client
                 {
                     throw;
                 }
-                else
+
+                return new ExceptionResponse { Exception = e };
+            }
+        }
+
+        private void ValidateState(ExceptionData exceptionData)
+        {
+            if (string.IsNullOrEmpty(Configuration.ApiKey))
+                throw new InvalidOperationException("ApiKey has not been provided for this client.");
+
+            if (exceptionData == null)
+                throw new ArgumentNullException("exceptionData");
+
+            if (exceptionData.Exception == null)
+                throw new ArgumentException("ExceptionData.Exception Cannot be null.", "exceptionData");
+        }
+
+        private void SetEnviromentInfo(ExceptionReport report)
+        {
+            report.cul = Thread.CurrentThread.CurrentCulture.Name;
+
+            try
+            {
+                report.os = Environment.OSVersion.VersionString;
+            }
+            catch (Exception)
+            {
+                if (Configuration.ThrowExceptions) throw;
+            }
+
+            if (Configuration.IncludeMachineName)
+            {
+                try
                 {
-                    return new ExceptionResponse { Exception = e };
+                    report.hn = Environment.MachineName;
                 }
+                catch (Exception)
+                {
+                    if (Configuration.ThrowExceptions) throw;
+                }
+            }
+        }
+
+        private void SetHttpInfo(ExceptionData exceptionData, ExceptionReport report)
+        {
+            if (exceptionData.HttpContext == null)
+            {
+                exceptionData.HttpContext = HttpContext.Current;
+            }
+
+            if (exceptionData.HttpContext != null)
+            {
+                try
+                {
+                    report.url = exceptionData.HttpContext.Request.Url.ToString();
+                    report.ua = exceptionData.HttpContext.Request.UserAgent;
+                }
+                catch (Exception)
+                {
+                    if (Configuration.ThrowExceptions) throw;
+                }
+            }
+
+            var httpException = exceptionData.Exception as HttpException;
+            if (httpException != null)
+            {
+                report.sc = httpException.GetHttpCode();
             }
         }
 
@@ -202,22 +219,14 @@ namespace Exceptron.Client
         {
             try
             {
-                var entryAssembly = GetWebEntryAssembly();
-
-                if (entryAssembly == null)
-                {
-                    entryAssembly = Assembly.GetEntryAssembly();
-                }
+                var entryAssembly = GetWebEntryAssembly() ?? Assembly.GetEntryAssembly();
 
                 if (entryAssembly == null)
                 {
                     entryAssembly = Assembly.GetCallingAssembly();
                 }
 
-                if (entryAssembly != null)
-                {
-                    ApplicationVersion = entryAssembly.GetName().Version.ToString();
-                }
+                ApplicationVersion = entryAssembly.GetName().Version.ToString();
             }
             catch (Exception e)
             {
@@ -225,30 +234,16 @@ namespace Exceptron.Client
             }
         }
 
-        private static string GetUrl(HttpRequest request)
-        {
-            return request.Url.ToString();
-        }
-
-        private static int StatusCode(HttpResponse response)
-        {
-            return response.StatusCode;
-        }
-
-        private static string BrowserAgent(HttpRequest request)
-        {
-            return request.Browser.Browser;
-        }
 
         static private Assembly GetWebEntryAssembly()
         {
-            if (System.Web.HttpContext.Current == null ||
-                System.Web.HttpContext.Current.ApplicationInstance == null)
+            if (HttpContext.Current == null ||
+                HttpContext.Current.ApplicationInstance == null)
             {
                 return null;
             }
 
-            var type = System.Web.HttpContext.Current.ApplicationInstance.GetType();
+            var type = HttpContext.Current.ApplicationInstance.GetType();
             while (type != null && type.Namespace == "ASP")
             {
                 type = type.BaseType;
