@@ -45,12 +45,6 @@ namespace Exceptron.Client.Message
         public string cmp { get; set; }
 
         /// <summary>
-        /// Environment that this exception occurred in. 
-        /// </summary>
-        /// <example>Dev, Stage, Production</example>
-        public string env { get; set; }
-
-        /// <summary>
         /// Message that was logged along with the exception.
         /// </summary>
         public string msg { get; set; }

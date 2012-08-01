@@ -1,3 +1,4 @@
+using System.Reflection;
 using Exceptron.Client.Configuration;
 using Exceptron.Client.Message;
 
@@ -9,14 +10,6 @@ namespace Exceptron.Client
         /// Client Configuration
         /// </summary>
         ExceptronConfiguration Configuration { get; }
-
-        /// <summary>
-        /// Environment that the application is running in
-        /// </summary>
-        /// <example>
-        /// Dev, Staging, Production
-        /// </example>
-        string Enviroment { get; set; }
 
         /// <summary>
         /// Version of application executing. Default: Version of <see cref="Assembly.GetEntryAssembly()"/>

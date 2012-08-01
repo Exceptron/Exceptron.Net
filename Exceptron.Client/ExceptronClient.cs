@@ -34,14 +34,7 @@ namespace Exceptron.Client
         /// </summary>
         public ExceptronConfiguration Configuration { get; private set; }
 
-        /// <summary>
-        /// Environment that the application is running in
-        /// </summary>
-        /// <example>
-        /// Dev, Staging, Production
-        /// </example>
-        public string Enviroment { get; set; }
-
+        
         /// <summary>
         /// Version of application executing. Default: Version of <see cref="Assembly.GetEntryAssembly()"/>
         /// </summary>
@@ -138,7 +131,6 @@ namespace Exceptron.Client
 
                 report.cmp = exceptionData.Component;
                 report.uid = exceptionData.UserId;
-                report.env = Enviroment;
                 report.msg = exceptionData.Message;
                 report.cul = Thread.CurrentThread.CurrentCulture.Name;
                 report.sv = (int)exceptionData.Severity;

@@ -58,10 +58,6 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
                  .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.aver == _clinet.ApplicationVersion )), Times.Once());
 
             _fakeRestClient
-                .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.env == _clinet.Enviroment)), Times.Once());
-        
-
-            _fakeRestClient
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.exm == FakeExceptionData.Exception.Message)), Times.Once());
 
             _fakeRestClient
