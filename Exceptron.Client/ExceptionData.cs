@@ -54,7 +54,8 @@ namespace Exceptron.Client
 
 
         /// <summary>
-        /// <see cref="System.Web.HttpContext"/> in which the exception occured
+        /// <see cref="System.Web.HttpContext"/> in which the exception occured. If no <see cref="System.Web.HttpContext"/> is provided
+        /// <see cref="ExceptronClient"/> will try to get the current <see cref="System.Web.HttpContext"/> from <see cref="System.Web.HttpContext.Current"/>
         /// </summary>
         public HttpContext HttpContext { get; set; }
     }

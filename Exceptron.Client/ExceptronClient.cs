@@ -87,6 +87,8 @@ namespace Exceptron.Client
         /// Timmy@aol.com
         /// 26437
         /// ">ID that will uniquely identify the user</param>
+        /// <param name="httpContext"><see cref="System.Web.HttpContext"/> in which the exception occured. If no <see cref="System.Web.HttpContext"/> is provided
+        /// <see cref="ExceptronClient"/> will try to get the current <see cref="System.Web.HttpContext"/> from <see cref="System.Web.HttpContext.Current"/></param>
         /// <returns></returns>
         public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity, string message = null, string userId = null, HttpContext httpContext = null)
         {
@@ -136,6 +138,11 @@ namespace Exceptron.Client
                 report.msg = exceptionData.Message;
                 report.cul = Thread.CurrentThread.CurrentCulture.Name;
                 report.sv = (int)exceptionData.Severity;
+
+                if (exceptionData.HttpContext == null)
+                {
+                    exceptionData.HttpContext = HttpContext.Current;
+                }
 
                 if (exceptionData.HttpContext != null)
                 {
