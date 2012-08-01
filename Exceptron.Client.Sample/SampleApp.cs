@@ -7,9 +7,6 @@ namespace Exceptron.Client.Sample
     {
         static void Main(string[] args)
         {
-
-            
-
             var exceptronConfig = new ExceptronConfiguration
                                       {
                                           ApiKey = "YOUR_API_TOKE",

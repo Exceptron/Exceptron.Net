@@ -74,5 +74,23 @@ namespace Exceptron.Client.Message
         /// Host name of the machine that encountered this exception
         /// </summary>
         public string hn { get; set; }
+
+        /// <summary>
+        /// Request url
+        /// <remarks>Only used for exception in context of a web request/</remarks>
+        public string url { get; set; }
+
+        /// <summary>
+        /// Browser useragent
+        /// </summary>
+        /// <remarks>Only used for exception in context of a web request/</remarks>
+        public string ua { get; set; }
+
+        /// <summary>
+        /// HTTP response status code
+        /// </summary>
+        /// <remarks>Only used for exception in context of a web request/</remarks>
+        public int sc { get; set; }
     }
+
 }

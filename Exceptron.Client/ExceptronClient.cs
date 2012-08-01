@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
+using System.Web;
 using Exceptron.Client.Configuration;
 using Exceptron.Client.Message;
 
@@ -34,7 +35,7 @@ namespace Exceptron.Client
         /// </summary>
         public ExceptronConfiguration Configuration { get; private set; }
 
-        
+
         /// <summary>
         /// Version of application executing. Default: Version of <see cref="Assembly.GetEntryAssembly()"/>
         /// </summary>
@@ -87,7 +88,7 @@ namespace Exceptron.Client
         /// 26437
         /// ">ID that will uniquely identify the user</param>
         /// <returns></returns>
-        public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity, string message = null, string userId = null)
+        public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity, string message = null, string userId = null, HttpContext httpContext = null)
         {
             var exceptionData = new ExceptionData
                                     {
@@ -95,7 +96,8 @@ namespace Exceptron.Client
                                         Component = component,
                                         Severity = severity,
                                         Message = message,
-                                        UserId = userId
+                                        UserId = userId,
+                                        HttpContext = httpContext
                                     };
 
             return SubmitException(exceptionData);
@@ -135,6 +137,19 @@ namespace Exceptron.Client
                 report.cul = Thread.CurrentThread.CurrentCulture.Name;
                 report.sv = (int)exceptionData.Severity;
 
+                if (exceptionData.HttpContext != null)
+                {
+                    try
+                    {
+                        report.url = exceptionData.HttpContext.Request.Url.ToString();
+                        report.ua = exceptionData.HttpContext.Request.Browser.Browser;
+                        report.sc = exceptionData.HttpContext.Response.StatusCode;
+                    }
+                    catch (Exception)
+                    {
+                        if (Configuration.ThrowExceptions) throw;
+                    }
+                }
                 try
                 {
                     report.os = Environment.OSVersion.VersionString;
@@ -201,6 +216,21 @@ namespace Exceptron.Client
             {
                 Trace.WriteLine("Can't figure out application version.", e.ToString());
             }
+        }
+
+        private static string GetUrl(HttpRequest request)
+        {
+            return request.Url.ToString();
+        }
+
+        private static int StatusCode(HttpResponse response)
+        {
+            return response.StatusCode;
+        }
+
+        private static string BrowserAgent(HttpRequest request)
+        {
+            return request.Browser.Browser;
         }
 
         static private Assembly GetWebEntryAssembly()

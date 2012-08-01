@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 
 namespace Exceptron.Client
 {
@@ -50,5 +51,11 @@ namespace Exceptron.Client
         /// Severity of the exception being reported
         /// </summary>
         public ExceptionSeverity Severity { get; set; }
+
+
+        /// <summary>
+        /// <see cref="System.Web.HttpContext"/> in which the exception occured
+        /// </summary>
+        public HttpContext HttpContext { get; set; }
     }
 }
