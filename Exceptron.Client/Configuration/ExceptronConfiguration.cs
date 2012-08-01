@@ -14,7 +14,8 @@ namespace Exceptron.Client.Configuration
 
         public static ExceptronConfiguration ReadConfig(string sectionName = "exceptron")
         {
-            return ConfigurationManager.GetSection(sectionName) as ExceptronConfiguration;
+            var configSection = ConfigurationManager.GetSection(sectionName) as ExceptronConfiguration;
+            return configSection;
         }
 
         internal string Host { get; set; }
@@ -27,13 +28,21 @@ namespace Exceptron.Client.Configuration
         /// If an exception is thrown while this flag is set to <see cref="bool.False"/> the thrown exception will be returned in <see cref="ExceptionResponse.Exception"/>
         /// </remarks>
         [ConfigurationProperty("throwExceptions", DefaultValue = false)]
-        public bool ThrowExceptions { get; set; }
+        public bool ThrowExceptions
+        {
+            get { return (bool)this["throwExceptions"]; }
+            set { this["throwExceptions"] = value; }
+        }
 
         /// <summary>
         /// The API of this application. Can find your API key in application settings page.
         /// </summary>
         [ConfigurationProperty("apiKey")]
-        public string ApiKey { get; set; }
+        public string ApiKey
+        {
+            get { return (string)this["apiKey"]; }
+            set { this["apiKey"] = value; }
+        }
 
 
         /// <summary>
@@ -43,7 +52,11 @@ namespace Exceptron.Client.Configuration
         /// servers are running the same app and the issue could be machine specific.
         /// Hoewever, You might want to disable this feature for privacy reasons.</remarks>
         [ConfigurationProperty("includeMachineName", DefaultValue = true)]
-        public bool IncludeMachineName { get; set; }
+        public bool IncludeMachineName
+        {
+            get { return (bool)this["includeMachineName"]; }
+            set { this["includeMachineName"] = value; }
+        }
 
     }
 }

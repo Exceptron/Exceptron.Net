@@ -17,6 +17,9 @@ namespace Exceptron.Client.Tests.ConfigurationTests
         public void should_be_able_to_read_the_default_config_section()
         {
             ExceptronConfiguration.ReadConfig().Should().NotBeNull();
+            ExceptronConfiguration.ReadConfig().ApiKey.Should().Be("ABCD");
+            ExceptronConfiguration.ReadConfig().ThrowExceptions.Should().BeTrue();
+            ExceptronConfiguration.ReadConfig().IncludeMachineName.Should().BeTrue();
         }
 
 
@@ -24,7 +27,7 @@ namespace Exceptron.Client.Tests.ConfigurationTests
         public void api_key_should_be_null_if_key_is_not_provided()
         {
             ExceptronConfiguration.ReadConfig("exceptron_noapikey").Should().NotBeNull();
-            ExceptronConfiguration.ReadConfig("exceptron_noapikey").ApiKey.Should().BeNull();
+            ExceptronConfiguration.ReadConfig("exceptron_noapikey").ApiKey.Should().BeEmpty();
         }
 
 

@@ -16,7 +16,7 @@ namespace Exceptron.Client.Sample
 
             //Create new instance of exceptron client
             //Configuration will be read from config file if no configuration is passed in.
-            var exceptron = new ExceptronClient(exceptronConfig);
+            var exceptron = new ExceptronClient();
 
             try
             {
