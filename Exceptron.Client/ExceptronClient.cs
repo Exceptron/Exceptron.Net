@@ -90,7 +90,7 @@ namespace Exceptron.Client
         /// <param name="httpContext"><see cref="System.Web.HttpContext"/> in which the exception occured. If no <see cref="System.Web.HttpContext"/> is provided
         /// <see cref="ExceptronClient"/> will try to get the current <see cref="System.Web.HttpContext"/> from <see cref="System.Web.HttpContext.Current"/></param>
         /// <returns></returns>
-        public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity, string message = null, string userId = null, HttpContext httpContext = null)
+        public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity, string message = null, string userId = null, HttpRequest httpRequest = null)
         {
             var exceptionData = new ExceptionData
                                     {
@@ -99,7 +99,7 @@ namespace Exceptron.Client
                                         Severity = severity,
                                         Message = message,
                                         UserId = userId,
-                                        HttpContext = httpContext
+                                        HttpRequest = httpRequest
                                     };
 
             return SubmitException(exceptionData);
@@ -189,19 +189,19 @@ namespace Exceptron.Client
 
         private void SetHttpInfo(ExceptionData exceptionData, ExceptionReport report)
         {
-            if (exceptionData.HttpContext == null)
+            if (exceptionData.HttpRequest == null && HttpContext.Current != null)
             {
-                exceptionData.HttpContext = HttpContext.Current;
+                exceptionData.HttpRequest = HttpContext.Current.Request;
             }
 
-            if (exceptionData.HttpContext != null)
+            if (exceptionData.HttpRequest != null)
             {
-                report.hm = exceptionData.HttpContext.Request.HttpMethod;
+                report.hm = exceptionData.HttpRequest.HttpMethod;
 
                 try
                 {
-                    report.url = exceptionData.HttpContext.Request.Url.ToString();
-                    report.ua = exceptionData.HttpContext.Request.UserAgent;
+                    report.url = exceptionData.HttpRequest.Url.ToString();
+                    report.ua = exceptionData.HttpRequest.UserAgent;
                 }
                 catch (Exception)
                 {
