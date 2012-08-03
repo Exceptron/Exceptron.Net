@@ -196,6 +196,8 @@ namespace Exceptron.Client
 
             if (exceptionData.HttpContext != null)
             {
+                report.hm = exceptionData.HttpContext.Request.HttpMethod;
+
                 try
                 {
                     report.url = exceptionData.HttpContext.Request.Url.ToString();

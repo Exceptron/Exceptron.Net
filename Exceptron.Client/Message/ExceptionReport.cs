@@ -91,6 +91,12 @@ namespace Exceptron.Client.Message
         /// </summary>
         /// <remarks>Only used for exception in context of a web request/</remarks>
         public int sc { get; set; }
+
+        /// <summary>
+        /// Indicates the HTTP data transfer method used by the client.
+        /// </summary>
+        /// <example>GET, POST, PUT, DELETE</example>
+        public string hm { get; set; }
     }
 
 }
