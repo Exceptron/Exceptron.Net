@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.ComponentModel;
+using System.Configuration;
 using Exceptron.Client.Message;
 
 namespace Exceptron.Client.Configuration
@@ -18,7 +19,12 @@ namespace Exceptron.Client.Configuration
             return configSection;
         }
 
-        internal string Host { get; set; }
+
+        /// <summary>
+        /// exceptron api address. Do not modify this property.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string Host { get; set; }
 
         /// <summary>
         /// If ExceptronClinet should throw exceptions in case of an error. Default: <see cref="bool.False"/>
