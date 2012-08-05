@@ -22,7 +22,7 @@ namespace Exceptron.Client
 
             var json = JSON.Instance.ToJSON(content);
 
-            byte[] bytes = Encoding.UTF8.GetBytes(json);
+            var bytes = Encoding.UTF8.GetBytes(json);
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Timeout = 10000;
             request.Method = "PUT";

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Configuration;
 using Exceptron.Client.Configuration;
 using Exceptron.Client.Message;
-using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 

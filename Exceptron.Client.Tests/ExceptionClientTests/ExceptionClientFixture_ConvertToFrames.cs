@@ -30,7 +30,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
 
             try
             {
-                var testStrings = new string[] { "Not A number" };
+                var testStrings = new[] { "Not A number" };
                 testStrings.Select(d => Convert.ToInt32(d)).ToList();
             }
             catch (Exception e)

@@ -19,18 +19,18 @@ namespace Exceptron.Client.fastJSON
         readonly bool useExtension = true;
         readonly bool serializeNulls = true;
         readonly int _MAX_DEPTH = 10;
-        bool _Indent = false;
-        bool _useGlobalTypes = true;
-        int _current_depth = 0;
-        private Dictionary<string, int> _globalTypes = new Dictionary<string, int>();
+        readonly bool _Indent;
+        readonly bool _useGlobalTypes = true;
+        int _current_depth;
+        private readonly Dictionary<string, int> _globalTypes = new Dictionary<string, int>();
 
         internal JSONSerializer(bool UseMinimalDataSetSchema, bool UseFastGuid, bool UseExtensions, bool SerializeNulls, bool IndentOutput)
         {
-            this.useMinimalDataSetSchema = UseMinimalDataSetSchema;
-            this.fastguid = UseFastGuid;
-            this.useExtension = UseExtensions;
+            useMinimalDataSetSchema = UseMinimalDataSetSchema;
+            fastguid = UseFastGuid;
+            useExtension = UseExtensions;
             _Indent = IndentOutput;
-            this.serializeNulls = SerializeNulls;
+            serializeNulls = SerializeNulls;
             if (useExtension == false)
                 _useGlobalTypes = false;
         }
@@ -56,7 +56,7 @@ namespace Exceptron.Client.fastJSON
                     sb.Append("\"");
                 }
                 sb.Append("},");
-                str = sb.ToString() + _output.ToString();
+                str = sb + _output.ToString();
             }
             else
                 str = _output.ToString();
@@ -100,7 +100,7 @@ namespace Exceptron.Client.fastJSON
                 WriteDataset((DataSet)obj);
 
             else if (obj is DataTable)
-                this.WriteDataTable((DataTable)obj);
+                WriteDataTable((DataTable)obj);
 #endif
             else if (obj is byte[])
                 WriteBytes((byte[])obj);
@@ -274,20 +274,20 @@ namespace Exceptron.Client.fastJSON
 
         void WriteDataTable(DataTable dt)
         {
-            this._output.Append('{');
-            if (this.useExtension)
+            _output.Append('{');
+            if (useExtension)
             {
-                this.WritePair("$schema", this.useMinimalDataSetSchema ? (object)this.GetSchema(dt) : this.GetXmlSchema(dt));
-                this._output.Append(',');
+                WritePair("$schema", useMinimalDataSetSchema ? (object)GetSchema(dt) : GetXmlSchema(dt));
+                _output.Append(',');
             }
 
             WriteDataTableData(dt);
 
             // end datatable
-            this._output.Append('}');
+            _output.Append('}');
         }
 #endif
-        bool _firstWritten = false;
+        bool _firstWritten;
         private void WriteObject(object obj)
         {
             Indent();
@@ -304,7 +304,7 @@ namespace Exceptron.Client.fastJSON
                 throw new Exception("Serializer encountered maximum depth of " + _MAX_DEPTH);
 
 
-            Dictionary<string, string> map = new Dictionary<string, string>();
+            var map = new Dictionary<string, string>();
             Type t = obj.GetType();
             bool append = false;
             if (useExtension)
@@ -325,7 +325,7 @@ namespace Exceptron.Client.fastJSON
                 append = true;
             }
 
-            List<Getters> g = JSON.Instance.GetGetters(t);
+            var g = JSON.Instance.GetGetters(t);
             foreach (var p in g)
             {
                 if (append)
@@ -339,7 +339,7 @@ namespace Exceptron.Client.fastJSON
                     if (o != null && useExtension)
                     {
                         Type tt = o.GetType();
-                        if (tt == typeof(System.Object))
+                        if (tt == typeof(Object))
                             map.Add(p.Name, tt.ToString());
                     }
                     append = true;
@@ -403,7 +403,7 @@ namespace Exceptron.Client.fastJSON
 
             bool pendingSeperator = false;
 
-            foreach (object obj in array)
+            foreach (var obj in array)
             {
                 Indent();
                 if (pendingSeperator) _output.Append(',');

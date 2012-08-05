@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Xml.Serialization;
 
 namespace Exceptron.Client.fastJSON
 {
@@ -57,7 +58,7 @@ namespace Exceptron.Client.fastJSON
       
         public object ToObject(string json, Type type)
         {
-            Dictionary<string, object> ht = new JsonParser(json).Decode() as Dictionary<string, object>;
+            var ht = new JsonParser(json).Decode() as Dictionary<string, object>;
             if (ht == null) return null;
             return ParseDictionary(ht, null, type);
         }
@@ -85,7 +86,8 @@ namespace Exceptron.Client.fastJSON
 #endif
 
         #region [   PROPERTY GET SET CACHE   ]
-        SafeDictionary<Type, string> _tyname = new SafeDictionary<Type, string>();
+
+        readonly SafeDictionary<Type, string> _tyname = new SafeDictionary<Type, string>();
         internal string GetTypeAssemblyName(Type t)
         {
             string val = "";
@@ -99,7 +101,7 @@ namespace Exceptron.Client.fastJSON
             }
         }
 
-        SafeDictionary<string, Type> _typecache = new SafeDictionary<string, Type>();
+        readonly SafeDictionary<string, Type> _typecache = new SafeDictionary<string, Type>();
         private Type GetTypeFromCache(string typename)
         {
             Type val = null;
@@ -113,7 +115,7 @@ namespace Exceptron.Client.fastJSON
             }
         }
 
-        SafeDictionary<Type, CreateObject> _constrcache = new SafeDictionary<Type, CreateObject>();
+        readonly SafeDictionary<Type, CreateObject> _constrcache = new SafeDictionary<Type, CreateObject>();
         private delegate object CreateObject();
         private object FastCreateInstance(Type objtype)
         {
@@ -178,7 +180,7 @@ namespace Exceptron.Client.fastJSON
             public bool CanWrite;
         }
 
-        SafeDictionary<string, SafeDictionary<string, myPropInfo>> _propertycache = new SafeDictionary<string, SafeDictionary<string, myPropInfo>>();
+        readonly SafeDictionary<string, SafeDictionary<string, myPropInfo>> _propertycache = new SafeDictionary<string, SafeDictionary<string, myPropInfo>>();
         private SafeDictionary<string, myPropInfo> Getproperties(Type type, string typename)
         {
             SafeDictionary<string, myPropInfo> sd = null;
@@ -189,8 +191,8 @@ namespace Exceptron.Client.fastJSON
             else
             {
                 sd = new SafeDictionary<string, myPropInfo>();
-                PropertyInfo[] pr = type.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                foreach (PropertyInfo p in pr)
+                var pr = type.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                foreach (var p in pr)
                 {
                     myPropInfo d = CreateMyProp(p.PropertyType, p.Name);
                     d.CanWrite = p.CanWrite;
@@ -256,7 +258,7 @@ namespace Exceptron.Client.fastJSON
             if (setMethod == null)
                 return null;
 
-            Type[] arguments = new Type[2];
+            var arguments = new Type[2];
             arguments[0] = arguments[1] = typeof(object);
 
             DynamicMethod setter = new DynamicMethod("_", typeof(void), arguments, true);
@@ -285,7 +287,7 @@ namespace Exceptron.Client.fastJSON
             if (getMethod == null)
                 return null;
 
-            Type[] arguments = new Type[1];
+            var arguments = new Type[1];
             arguments[0] = typeof(object);
 
             DynamicMethod getter = new DynamicMethod("_", typeof(object), arguments, true);
@@ -309,17 +311,17 @@ namespace Exceptron.Client.fastJSON
             if (_getterscache.TryGetValue(type, out val))
                 return val;
 
-            PropertyInfo[] props = type.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            List<Getters> getters = new List<Getters>();
-            foreach (PropertyInfo p in props)
+            var props = type.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            var getters = new List<Getters>();
+            foreach (var p in props)
             {
                 if (!p.CanWrite && ShowReadOnlyProperties == false) continue;
 
-                object[] att = p.GetCustomAttributes(typeof(System.Xml.Serialization.XmlIgnoreAttribute), false);
+                var att = p.GetCustomAttributes(typeof(XmlIgnoreAttribute), false);
                 if (att != null && att.Length > 0)
                     continue;
 
-                JSON.GenericGetter g = CreateGetMethod(p);
+                GenericGetter g = CreateGetMethod(p);
                 if (g != null)
                 {
                     Getters gg = new Getters();
@@ -344,7 +346,7 @@ namespace Exceptron.Client.fastJSON
                 return CreateLong((string)value);
 
             else if (conversionType == typeof(string))
-                return (string)value;
+                return value;
 
             else if (conversionType == typeof(Guid))
                 return CreateGuid((string)value);
@@ -372,7 +374,7 @@ namespace Exceptron.Client.fastJSON
 
             bool found = d.TryGetValue("$type", out tn);
 #if !SILVERLIGHT
-            if (found == false && type == typeof(System.Object))
+            if (found == false && type == typeof(Object))
             {
                 return CreateDataset(d, globaltypes);
             }
@@ -393,8 +395,8 @@ namespace Exceptron.Client.fastJSON
 
             string typename = type.FullName;
             object o = FastCreateInstance(type);
-            SafeDictionary<string, myPropInfo> props = Getproperties(type, typename);
-            foreach (string name in d.Keys)
+            var props = Getproperties(type, typename);
+            foreach (var name in d.Keys)
             {
                 if (name == "$map")
                 {
@@ -404,7 +406,7 @@ namespace Exceptron.Client.fastJSON
                 myPropInfo pi;
                 if (props.TryGetValue(name, out pi) == false)
                     continue;
-                if (pi.filled == true)
+                if (pi.filled)
                 {
                     object v = d[name];
 
@@ -422,7 +424,7 @@ namespace Exceptron.Client.fastJSON
                             oset = CreateLong((string)v);
 
                         else if (pi.isString)
-                            oset = (string)v;
+                            oset = v;
 
                         else if (pi.isBool)
                             oset = (bool)v;
@@ -449,7 +451,7 @@ namespace Exceptron.Client.fastJSON
                             oset = CreateDataset((Dictionary<string, object>)v, globaltypes);
 
                         else if (pi.isDataTable)
-                            oset = this.CreateDataTable((Dictionary<string, object>)v, globaltypes);
+                            oset = CreateDataTable((Dictionary<string, object>)v, globaltypes);
 #endif
 
                         else if (pi.isStringDictionary)
@@ -502,9 +504,9 @@ namespace Exceptron.Client.fastJSON
         }
 #endif
 
-        private void ProcessMap(object obj, SafeDictionary<string, JSON.myPropInfo> props, Dictionary<string, object> dic)
+        private void ProcessMap(object obj, SafeDictionary<string, myPropInfo> props, Dictionary<string, object> dic)
         {
-            foreach (KeyValuePair<string, object> kv in dic)
+            foreach (var kv in dic)
             {
                 myPropInfo p = props[kv.Key];
                 object o = p.getter(obj);
@@ -518,7 +520,7 @@ namespace Exceptron.Client.fastJSON
         {
             long num = 0;
             bool neg = false;
-            foreach (char cc in s)
+            foreach (var cc in s)
             {
                 if (cc == '-')
                     neg = true;
@@ -527,7 +529,7 @@ namespace Exceptron.Client.fastJSON
                 else
                 {
                     num *= 10;
-                    num += (int)(cc - '0');
+                    num += (cc - '0');
                 }
             }
 
@@ -594,7 +596,7 @@ namespace Exceptron.Client.fastJSON
         {
             ArrayList col = new ArrayList();
             // create an array of objects
-            foreach (object ob in data)
+            foreach (var ob in data)
             {
                 if (ob is IDictionary)
                     col.Add(ParseDictionary((Dictionary<string, object>)ob, globalTypes, bt));
@@ -614,7 +616,7 @@ namespace Exceptron.Client.fastJSON
         {
             IList col = (IList)FastCreateInstance(pt);
             // create an array of objects
-            foreach (object ob in data)
+            foreach (var ob in data)
             {
                 if (ob is IDictionary)
                     col.Add(ParseDictionary((Dictionary<string, object>)ob, globalTypes, bt));
@@ -642,7 +644,7 @@ namespace Exceptron.Client.fastJSON
                 t2 = types[1];
             }
 
-            foreach (KeyValuePair<string, object> values in reader)
+            foreach (var values in reader)
             {
                 var key = values.Key;//ChangeType(values.Key, t1);
                 object val = null;
@@ -709,7 +711,7 @@ namespace Exceptron.Client.fastJSON
             // read dataset schema here
             ReadSchema(reader, ds, globalTypes);
 
-            foreach (KeyValuePair<string, object> pair in reader)
+            foreach (var pair in reader)
             {
                 if (pair.Key == "$type" || pair.Key == "$schema") continue;
 
@@ -751,8 +753,8 @@ namespace Exceptron.Client.fastJSON
         {
             dt.BeginInit();
             dt.BeginLoadData();
-            List<int> guidcols = new List<int>();
-            List<int> datecol = new List<int>();
+            var guidcols = new List<int>();
+            var datecol = new List<int>();
 
             foreach (DataColumn c in dt.Columns)
             {
@@ -764,9 +766,9 @@ namespace Exceptron.Client.fastJSON
 
             foreach (ArrayList row in rows)
             {
-                object[] v = new object[row.Count];
+                var v = new object[row.Count];
                 row.CopyTo(v, 0);
-                foreach (int i in guidcols)
+                foreach (var i in guidcols)
                 {
                     string s = (string)v[i];
                     if (s != null && s.Length < 36)
@@ -774,7 +776,7 @@ namespace Exceptron.Client.fastJSON
                 }
                 if (UseUTCDateTime)
                 {
-                    foreach (int i in datecol)
+                    foreach (var i in datecol)
                     {
                         string s = (string)v[i];
                         if (s != null)
@@ -802,7 +804,7 @@ namespace Exceptron.Client.fastJSON
             }
             else
             {
-                var ms = (DatasetSchema)this.ParseDictionary((Dictionary<string, object>)schema, globalTypes, typeof(DatasetSchema));
+                var ms = (DatasetSchema)ParseDictionary((Dictionary<string, object>)schema, globalTypes, typeof(DatasetSchema));
                 dt.TableName = ms.Info[0];
                 for (int i = 0; i < ms.Info.Count; i += 3)
                 {

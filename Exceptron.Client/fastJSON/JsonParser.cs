@@ -50,7 +50,7 @@ namespace Exceptron.Client.fastJSON
 
         private Dictionary<string, object> ParseObject()
         {
-            Dictionary<string, object> table = new Dictionary<string, object>();
+            var table = new Dictionary<string, object>();
 
             ConsumeToken(); // {
 

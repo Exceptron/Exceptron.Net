@@ -38,7 +38,7 @@ namespace Exceptron.Client.Tests.RestClientTests
             _exceptionReport.ap = "CB230C312E5C4FF38B4FB9644B05EXXX";
             var exception = Assert.Throws<ExceptronApiException>(() => _restClient.Put<ExceptionResponse>(Url, _exceptionReport));
             
-            ((HttpWebResponse)(exception.Response)).StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            ((exception.Response)).StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
         [Test]
