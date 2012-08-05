@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using System.Threading;
 using Exceptron.Client.Configuration;
 using Exceptron.Client.Message;
-using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
@@ -13,49 +11,49 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
     [TestFixture]
     public class ExceptionClient_SuccessFixture : ClientTest
     {
-        private ExceptronClient _clinet;
+        private ExceptronClient _client;
         private Mock<IRestClient> _fakeRestClient;
 
         [SetUp]
         public void Setup()
         {
             _fakeRestClient = new Mock<IRestClient>();
-            _clinet = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
+            _client = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
         }
 
 
         [Test]
         public void message_should_contain_api_key()
         {
-            _clinet.SubmitException(FakeExceptionData);
+            _client.SubmitException(FakeExceptionData);
 
             _fakeRestClient
-                .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.ap == _clinet.Configuration.ApiKey)), Times.Once());
+                .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.ap == _client.Configuration.ApiKey)), Times.Once());
         }
 
 
         [Test]
         public void message_should_contain_driver_info()
         {
-            _clinet.SubmitException(FakeExceptionData);
+            _client.SubmitException(FakeExceptionData);
 
             _fakeRestClient
-                .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.dn == _clinet.ClientName)), Times.Once());
+                .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.dn == _client.ClientName)), Times.Once());
 
             _fakeRestClient
-                .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.dv == _clinet.ClientVersion)), Times.Once());
+                .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.dv == _client.ClientVersion)), Times.Once());
         }
 
         [Test]
         public void message_should_contain_exception_data()
         {
-            _clinet.SubmitException(FakeExceptionData);
+            _client.SubmitException(FakeExceptionData);
 
             _fakeRestClient
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.cmp == FakeExceptionData.Component)), Times.Once());
 
             _fakeRestClient
-                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.aver == _clinet.ApplicationVersion )), Times.Once());
+                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.aver == _client.ApplicationVersion )), Times.Once());
 
             _fakeRestClient
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.exm == FakeExceptionData.Exception.Message)), Times.Once());

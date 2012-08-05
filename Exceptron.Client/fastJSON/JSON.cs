@@ -9,12 +9,9 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
-using Exceptron.Client.fastJSON;
 
 namespace Exceptron.Client.fastJSON
 {
-    internal delegate string Serialize(object data);
-    internal delegate object Deserialize(string data);
 
     internal class JSON
     {
@@ -41,19 +38,7 @@ namespace Exceptron.Client.fastJSON
             return ToJSON(obj, UseSerializerExtension, UseFastGuid, UseOptimizedDatasetSchema, SerializeNullValues);
         }
 
-        public string ToJSON(object obj,
-                             bool enableSerializerExtensions)
-        {
-            return ToJSON(obj, enableSerializerExtensions, UseFastGuid, UseOptimizedDatasetSchema, SerializeNullValues);
-        }
-
-        public string ToJSON(object obj,
-                             bool enableSerializerExtensions,
-                             bool enableFastGuid)
-        {
-            return ToJSON(obj, enableSerializerExtensions, enableFastGuid, UseOptimizedDatasetSchema, SerializeNullValues);
-        }
-
+      
         public string ToJSON(object obj,
                              bool enableSerializerExtensions,
                              bool enableFastGuid,
@@ -63,21 +48,13 @@ namespace Exceptron.Client.fastJSON
             return new JSONSerializer(enableOptimizedDatasetSchema, enableFastGuid, enableSerializerExtensions, serializeNullValues, IndentOutput).ConvertToJSON(obj);
         }
 
-        public object Parse(string json)
-        {
-            return new JsonParser(json).Decode();
-        }
-
+      
         public T ToObject<T>(string json)
         {
             return (T)ToObject(json, typeof(T));
         }
 
-        public object ToObject(string json)
-        {
-            return ToObject(json, null);
-        }
-
+      
         public object ToObject(string json, Type type)
         {
             Dictionary<string, object> ht = new JsonParser(json).Decode() as Dictionary<string, object>;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Web;
+﻿using System.Web;
 using Exceptron.Client.Configuration;
 using Exceptron.Client.Message;
 using FluentAssertions;
@@ -18,7 +12,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
     {
         private ExceptronClient _clinet;
         private Mock<IRestClient> _fakeRestClient;
-        private ExceptionReport _submitedReport;
+        private ExceptionReport _submittedReport;
         private HttpContext _httpContext;
 
         [SetUp]
@@ -27,7 +21,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
             _fakeRestClient = new Mock<IRestClient>();
             _fakeRestClient
                         .Setup(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.IsAny<ExceptionReport>()))
-                        .Callback<string, object>((target, report) => _submitedReport = (ExceptionReport)report);
+                        .Callback<string, object>((target, report) => _submittedReport = (ExceptionReport)report);
 
             _clinet = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
 
@@ -46,7 +40,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
             _httpContext.Response.StatusCode = 401;
             _clinet.SubmitException(FakeExceptionData);
 
-            _submitedReport.sc.Should().Be(401);
+            _submittedReport.sc.Should().Be(401);
 
         }
     }

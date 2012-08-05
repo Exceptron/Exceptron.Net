@@ -11,24 +11,20 @@ namespace Exceptron.Client.fastJSON
         private readonly Dictionary<TKey, TValue> _Dictionary = new Dictionary<TKey, TValue>();
 
 
-        public bool TryGetValue(TKey key, out TValue value)
+        internal bool TryGetValue(TKey key, out TValue value)
         {
             return _Dictionary.TryGetValue(key, out value);
         }
 
-        public TValue this[TKey key]
+        internal TValue this[TKey key]
         {
             get
             {
                 return _Dictionary[key];
             }
         }
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)_Dictionary).GetEnumerator();
-        }
 
-        public void Add(TKey key, TValue value)
+        internal void Add(TKey key, TValue value)
         {
             lock (_Padlock)
             {

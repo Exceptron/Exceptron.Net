@@ -7,16 +7,10 @@ namespace Exceptron.Client.Sample
     {
         static void Main(string[] args)
         {
-            var exceptronConfig = new ExceptronConfiguration
-                                      {
-                                          ApiKey = "YOUR_API_TOKE",
-                                          IncludeMachineName = true,
-                                          ThrowExceptions = true
-                                      };
+            ExceptronClient exceptron = null;
 
-            //Create new instance of exceptron client
-            //Configuration will be read from config file if no configuration is passed in.
-            var exceptron = new ExceptronClient();
+            //exceptron = GetClientConfiguredAtRuntime();
+            exceptron = GetClientUsingConfigFile();
 
             try
             {
@@ -27,6 +21,24 @@ namespace Exceptron.Client.Sample
                 exceptron.SubmitException(e, "Main", ExceptionSeverity.Fatal, "Couldn't call the broken method", "User1");
             }
 
+        }
+
+
+        private static ExceptronClient GetClientUsingConfigFile()
+        {
+            return new ExceptronClient();
+        }
+         
+        private static ExceptronClient GetClientConfiguredAtRuntime()
+        {
+            var exceptronConfig = new ExceptronConfiguration
+            {
+                ApiKey = "YOUR_API_TOKE",
+                IncludeMachineName = true,
+                ThrowExceptions = true
+            };
+
+            return new ExceptronClient(exceptronConfig);
         }
 
         private static int CallToBrokenMethod()
