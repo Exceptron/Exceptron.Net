@@ -90,7 +90,7 @@ namespace Exceptron.Client
         /// <param name="httpContext"><see cref="System.Web.HttpContext"/> in which the exception occured. If no <see cref="System.Web.HttpContext"/> is provided
         /// <see cref="ExceptronClient"/> will try to get the current <see cref="System.Web.HttpContext"/> from <see cref="System.Web.HttpContext.Current"/></param>
         /// <returns></returns>
-        public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity, string message = null, string userId = null, HttpRequest httpRequest = null)
+        public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity = ExceptionSeverity.None, string message = null, string userId = null, HttpContext httpContext = null)
         {
             var exceptionData = new ExceptionData
                                     {
@@ -99,7 +99,7 @@ namespace Exceptron.Client
                                         Severity = severity,
                                         Message = message,
                                         UserId = userId,
-                                        HttpRequest = httpRequest
+                                        HttpContext = httpContext
                                     };
 
             return SubmitException(exceptionData);
@@ -189,19 +189,20 @@ namespace Exceptron.Client
 
         private void SetHttpInfo(ExceptionData exceptionData, ExceptionReport report)
         {
-            if (exceptionData.HttpRequest == null && HttpContext.Current != null)
+            if (exceptionData.HttpContext == null && HttpContext.Current != null)
             {
-                exceptionData.HttpRequest = HttpContext.Current.Request;
+                exceptionData.HttpContext = HttpContext.Current;
             }
 
-            if (exceptionData.HttpRequest != null)
+            if (exceptionData.HttpContext != null)
             {
-                report.hm = exceptionData.HttpRequest.HttpMethod;
+                report.hm = exceptionData.HttpContext.Request.HttpMethod;
 
                 try
                 {
-                    report.url = exceptionData.HttpRequest.Url.ToString();
-                    report.ua = exceptionData.HttpRequest.UserAgent;
+                    report.url = exceptionData.HttpContext.Request.Url.ToString();
+                    report.ua = exceptionData.HttpContext.Request.UserAgent;
+                    report.sc = exceptionData.HttpContext.Response.StatusCode;
                 }
                 catch (Exception)
                 {
@@ -209,11 +210,6 @@ namespace Exceptron.Client
                 }
             }
 
-            var httpException = exceptionData.Exception as HttpException;
-            if (httpException != null)
-            {
-                report.sc = httpException.GetHttpCode();
-            }
         }
 
 

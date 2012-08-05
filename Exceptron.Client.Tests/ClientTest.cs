@@ -20,26 +20,33 @@ namespace Exceptron.Client.Tests
         [DebuggerStepThrough]
         public void ClientTestSetup()
         {
+            FakeExceptionData = Builder<ExceptionData>.CreateNew()
+                .With(c => c.Exception = GetThrownException(new TestException()))
+                .Build();
+
+        }
+
+        private static Exception GetThrownException(Exception exception)
+        {
             try
             {
-                ThrowsException();
+                ThrowException(exception);
             }
             catch (Exception e)
             {
-                FakeExceptionData = Builder<ExceptionData>.CreateNew()
-                    .With(c => c.Exception = e)
-                    .Build();
+                return e;
             }
+
+            return null;
         }
+
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         [DebuggerStepThrough]
-        private static void ThrowsException()
+        private static void ThrowException(Exception exception)
         {
-            throw new TestException();
+            throw exception;
         }
-
-
 
         public static void AssertFailedResponse(ExceptionResponse response)
         {
