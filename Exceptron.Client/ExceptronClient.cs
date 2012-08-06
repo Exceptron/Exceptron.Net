@@ -189,27 +189,29 @@ namespace Exceptron.Client
 
         private void SetHttpInfo(ExceptionData exceptionData, ExceptionReport report)
         {
-            if (exceptionData.HttpContext == null && HttpContext.Current != null)
-            {
-                exceptionData.HttpContext = HttpContext.Current;
-            }
+            if (exceptionData.HttpContext == null && HttpContext.Current == null)
+                return;
 
-            if (exceptionData.HttpContext != null)
+            exceptionData.HttpContext = HttpContext.Current;
+
+            try
             {
+                var httpException = exceptionData.Exception as HttpException;
+
                 report.hm = exceptionData.HttpContext.Request.HttpMethod;
 
-                try
+                if (httpException != null)
                 {
-                    report.url = exceptionData.HttpContext.Request.Url.ToString();
-                    report.ua = exceptionData.HttpContext.Request.UserAgent;
-                    report.sc = exceptionData.HttpContext.Response.StatusCode;
+                    report.sc = httpException.GetHttpCode();
                 }
-                catch (Exception)
-                {
-                    if (Configuration.ThrowExceptions) throw;
-                }
-            }
 
+                report.url = exceptionData.HttpContext.Request.Url.ToString();
+                report.ua = exceptionData.HttpContext.Request.UserAgent;
+            }
+            catch (Exception)
+            {
+                if (Configuration.ThrowExceptions) throw;
+            }
         }
 
 
