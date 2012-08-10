@@ -67,7 +67,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
 
             var response = _clinet.SubmitException(FakeExceptionData);
 
-            AssertFailedResponse(response);
+            AssertFailedResponse<TestException>(response);
         }
 
 

@@ -16,12 +16,4 @@
   <UseBuildConfiguration></UseBuildConfiguration>
   <ProxyProcessPath></ProxyProcessPath>
   <UseCPUArchitecture>AutoDetect</UseCPUArchitecture>
-  <IgnoredTests>
-    <NamedTestSelector>
-      <TestName>Exceptron.Client.Tests.IntegerationTests.V1IntegerationTests.invalid_request_should_return_faild_result</TestName>
-    </NamedTestSelector>
-    <NamedTestSelector>
-      <TestName>Exceptron.Client.Tests.IntegerationTests.V1IntegerationTests.should_be_able_to_submit_exception</TestName>
-    </NamedTestSelector>
-  </IgnoredTests>
 </ProjectConfiguration>

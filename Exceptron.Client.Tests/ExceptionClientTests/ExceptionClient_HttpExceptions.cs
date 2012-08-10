@@ -32,17 +32,6 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
             FakeExceptionData.HttpContext = _httpContext;
 
         }
-
-
-        [Test]
-        public void status_code_should_be_set_to_context_statuscode()
-        {
-            _httpContext.Response.StatusCode = 401;
-            _clinet.SubmitException(FakeExceptionData);
-
-            _submittedReport.sc.Should().Be(401);
-
-        }
     }
 
 }

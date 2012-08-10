@@ -10,11 +10,11 @@ namespace Exceptron.Client.Tests
 {
     public abstract class ClientTest
     {
-        public const string Url = "http://api.exceptron.com/v1a/";
-        public const string ApiKey = "CB230C312E5C4FF38B4FB9644B05E60G";
+        protected const string Url = "http://api.exceptron.com/v1a/";
+        protected const string ApiKey = "CB230C312E5C4FF38B4FB9644B05E60G";
 
 
-        public ExceptionData FakeExceptionData { get; private set; }
+        protected ExceptionData FakeExceptionData { get; set; }
 
         [SetUp]
         [DebuggerStepThrough]
@@ -48,20 +48,26 @@ namespace Exceptron.Client.Tests
             throw exception;
         }
 
-        public static void AssertFailedResponse(ExceptionResponse response)
+        protected static void AssertFailedResponse<T>(ExceptionResponse response) where T : Exception
         {
             response.Should().NotBeNull();
             response.RefId.Should().BeNull();
             response.Successful.Should().BeFalse();
             response.Exception.Should().NotBeNull();
+            response.Exception.Should().BeOfType<T>();
         }
 
-        public static void AssertSuccessfulResponse(ExceptionResponse response)
+        protected static void AssertSuccessfulResponse(ExceptionResponse response)
         {
             response.Should().NotBeNull();
             response.Successful.Should().BeTrue();
             response.RefId.Should().HaveLength(8);
             response.Exception.Should().BeNull();
+        }
+
+        protected static bool InTeamCity()
+        {
+            return !String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
         }
     }
 }

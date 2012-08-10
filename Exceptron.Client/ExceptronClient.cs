@@ -196,14 +196,16 @@ namespace Exceptron.Client
 
             try
             {
-                var httpException = exceptionData.Exception as HttpException;
 
                 report.hm = exceptionData.HttpContext.Request.HttpMethod;
 
+                //TODO:find proper way to find http status code.
+                /*
+                var httpException = exceptionData.Exception as HttpException;                
                 if (httpException != null)
                 {
                     report.sc = httpException.GetHttpCode();
-                }
+                }*/
 
                 report.url = exceptionData.HttpContext.Request.Url.ToString();
                 report.ua = exceptionData.HttpContext.Request.UserAgent;
