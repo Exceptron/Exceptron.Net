@@ -97,6 +97,15 @@ namespace Exceptron.Client.Message
         /// </summary>
         /// <example>GET, POST, PUT, DELETE</example>
         public string hm { get; set; }
-    }
 
+        /// <summary>
+        /// Framework Version (CLR) of the Host Application
+        /// </summary>
+        public string fv { get; set; }
+
+        /// <summary>
+        /// Framework Type of the Host Application
+        /// </summary>
+        public string ft { get; set; }
+    }
 }

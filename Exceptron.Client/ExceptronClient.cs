@@ -41,7 +41,18 @@ namespace Exceptron.Client
         /// </summary>
         public string ApplicationVersion { get; set; }
 
+        /// <summary>
+        /// Version of CLR executing. Default: <see cref="Environment.Version"/>
+        /// </summary>
+        public string FrameworkVersion
+        {
+            get { return Environment.Version.ToString(); }
+        }
 
+        /// <summary>
+        /// Framework Type of the Host Application (.Net/mono)
+        /// </summary>
+        public string FrameworkType { get; set; }
 
         /// <summary>
         /// Creates a new instance of <see cref="ExceptronClient"/>
@@ -50,6 +61,7 @@ namespace Exceptron.Client
         public ExceptronClient()
             : this(ExceptronConfiguration.ReadConfig())
         {
+            FrameworkType = ".Net";
         }
 
         /// <param name="exceptronConfiguration">Exceptron client configuration</param>
@@ -66,6 +78,8 @@ namespace Exceptron.Client
             RestClient = new RestClient();
 
             SetApplicationVersion();
+
+            FrameworkType = ".Net";
         }
 
         /// <summary>
@@ -130,6 +144,8 @@ namespace Exceptron.Client
                 report.uid = exceptionData.UserId;
                 report.msg = exceptionData.Message;
                 report.sv = (int)exceptionData.Severity;
+                report.fv = FrameworkVersion;
+                report.ft = FrameworkType;
 
                 SetHttpInfo(exceptionData, report);
                 SetEnviromentInfo(report);
