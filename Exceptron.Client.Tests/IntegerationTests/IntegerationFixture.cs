@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Exceptron.Client.Tests.IntegerationTests
 {
     [TestFixture(Category = "Integeration")]
-    public class V1IntegerationTests : ClientTest
+    public class IntegerationFixture : ClientTest
     {
         private ExceptronClient _exceptronClient;
 

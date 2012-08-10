@@ -83,7 +83,7 @@
     <Compile Include="ExceptionClientTests\ExceptionClient_FailureFixture.cs" />
     <Compile Include="fastJSONTests\JsonSerializerFixture.cs" />
     <Compile Include="ExceptionClientTests\ExceptionClientFixture_ConvertToFrames.cs" />
-    <Compile Include="IntegerationTests\ExceptionServiceFixture.cs" />
+    <Compile Include="IntegerationTests\IntegerationFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestException.cs" />
   </ItemGroup>
