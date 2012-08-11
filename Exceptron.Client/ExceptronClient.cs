@@ -42,14 +42,6 @@ namespace Exceptron.Client
         public string ApplicationVersion { get; set; }
 
         /// <summary>
-        /// Version of CLR executing. Default: <see cref="Environment.Version"/>
-        /// </summary>
-        public string FrameworkVersion
-        {
-            get { return Environment.Version.ToString(); }
-        }
-
-        /// <summary>
         /// Framework Type of the Host Application (.Net/mono)
         /// </summary>
         public string FrameworkType { get; set; }
@@ -144,7 +136,7 @@ namespace Exceptron.Client
                 report.uid = exceptionData.UserId;
                 report.msg = exceptionData.Message;
                 report.sv = (int)exceptionData.Severity;
-                report.fv = FrameworkVersion;
+                report.fv = GetMaximumFrameworkVersion();
                 report.ft = FrameworkType;
 
                 SetHttpInfo(exceptionData, report);
@@ -232,7 +224,6 @@ namespace Exceptron.Client
             }
         }
 
-
         private void SetApplicationVersion()
         {
             try
@@ -251,7 +242,6 @@ namespace Exceptron.Client
                 Trace.WriteLine("Can't figure out application version.", e.ToString());
             }
         }
-
 
         static private Assembly GetWebEntryAssembly()
         {
@@ -312,5 +302,41 @@ namespace Exceptron.Client
             return result;
         }
 
+        private string GetMaximumFrameworkVersion()
+        {
+            var clrVersion = Environment.Version;
+
+            if (clrVersion.Major == 2)
+            {
+                //Check if 2.0 or 3.5
+                try
+                {
+                    Assembly.Load("System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+                    return "3.5";
+                }
+                catch (Exception)
+                {
+                }
+
+                return "2.0";
+            }
+
+            if (clrVersion.Major == 4)
+            {
+                //Check if 4.0 or 4.5
+                try
+                {
+                    Assembly.Load("System.Threading.Tasks.Parallel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
+                    return "4.5";
+                }
+                catch (Exception)
+                {
+                }
+
+                return "4.0";
+            }
+
+            return "Unknown";
+        }
     }
 }
