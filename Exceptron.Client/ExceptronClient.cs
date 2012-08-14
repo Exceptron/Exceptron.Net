@@ -200,7 +200,10 @@ namespace Exceptron.Client
             if (exceptionData.HttpContext == null && HttpContext.Current == null)
                 return;
 
-            exceptionData.HttpContext = HttpContext.Current;
+            if (exceptionData.HttpContext == null)
+            {
+                exceptionData.HttpContext = HttpContext.Current;
+            }
 
             try
             {
