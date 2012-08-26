@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Exceptron.Client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyDescription("In-cloud exception aggregation and analytics.")]
+[assembly: AssemblyDescription(".NET client for exceptron API. In-cloud exception aggregation and analytics.")]
 [assembly: AssemblyCompany("Exceptron Solutions Inc.")]
 [assembly: AssemblyProduct("Exceptron.Client")]
 [assembly: AssemblyCopyright("Copyright © 2012")]

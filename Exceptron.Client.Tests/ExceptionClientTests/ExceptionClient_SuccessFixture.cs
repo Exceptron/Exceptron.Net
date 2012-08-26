@@ -53,7 +53,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.cmp == FakeExceptionData.Component)), Times.Once());
 
             _fakeRestClient
-                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.aver == _client.ApplicationVersion )), Times.Once());
+                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.aver == _client.ApplicationVersion)), Times.Once());
 
             _fakeRestClient
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.exm == FakeExceptionData.Exception.Message)), Times.Once());
@@ -83,13 +83,6 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.hn == Environment.MachineName)), Times.Once());
 
         }
-
-
-
-
-
-
-
 
     }
 

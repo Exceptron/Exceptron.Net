@@ -15,8 +15,14 @@ namespace Exceptron.Client.Configuration
 
         public static ExceptronConfiguration ReadConfig(string sectionName = "exceptron")
         {
-            var configSection = ConfigurationManager.GetSection(sectionName) as ExceptronConfiguration;
-            return configSection;
+            var configSection = ConfigurationManager.GetSection(sectionName);
+
+            if (configSection == null)
+            {
+                throw new ConfigurationErrorsException("ExceptronConfiguration section missing.");
+            }
+
+            return (ExceptronConfiguration)configSection;
         }
 
 

@@ -1,4 +1,5 @@
-﻿using Exceptron.Client.Configuration;
+﻿using System.Configuration;
+using Exceptron.Client.Configuration;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -10,7 +11,7 @@ namespace Exceptron.Client.Tests.ConfigurationTests
         [Test]
         public void missing_config_section_should_not_have()
         {
-            ExceptronConfiguration.ReadConfig("missing_section").Should().BeNull();
+           Assert.Throws<ConfigurationErrorsException>(()=> ExceptronConfiguration.ReadConfig("missing_section"));
         }
 
         [Test]
