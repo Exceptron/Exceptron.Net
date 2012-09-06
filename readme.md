@@ -2,13 +2,18 @@
 
 **Exceptron.Client** is a .NET wrapper for [exceptron's](https://www.exceptron.com) REST API.
 
+## Requirements ##
+.NET Framework 2.0 or Higher.
+
+*`exceptron.client.dll` currently has no dependencies on any external libraries.*
+
 ## Download ##
 
-You can download the binary version of `Exceptron.Client` from nuget [here](http://nuget.org/packages/exceptron.client "here")
+You can download the latest binary version of `Exceptron.Client` from [nuget](http://nuget.org/packages/exceptron.client)
 
 To install Exceptron.Client, run the following command in the Package Manager Console
 
-`Install-Package Exceptron.Client -Pre`
+`Install-Package Exceptron.Client`
 
 ## Usage ##
 
@@ -32,6 +37,7 @@ catch (Exception e)
 ###Response `ExceptionResponse`###
 `SubmitException()` method returns an instance of `ExceptionResponse`
 
+**`Exceptron.Client.Message.ExceptionResponse:`**
 
 #####`[string] RefId` 
 > This filed will be populated with the Reference ID of your exception report. similar exceptions will return the same RefId but each exception instance is still stored individually on the server. You can show this ID to the user which could provide to you. This can allow you to see exact detail of the exception on your dashboard.
@@ -51,13 +57,13 @@ catch (Exception e)
 > The API key that identifies your application. you can find the API key in the application settings page.
 
 #####`[bool] ThrowExceptions`
-> Whether or not exceptron client is allowed to throw exceptions when errors occure. Setting this value to `False` will cause exceptron client not to throw exceptions under any circumstances.
+> Whether or not exceptron client is allowed to throw exceptions in an errors occures. Setting this value to `False` will cause the client not to throw exceptions under any circumstances.
 
 >*We recommend that you enable exceptions during debug and development and disable in production* 
 
 #####`[bool] IncludeMachineName` 
 >Whether or not the machine name should be attached to the exception report.
-Machine name can be useful in webfarm enviroments where multiple servers are running the same app and the issues could be machine specific. However, You might want to disable this feature for privacy reasons.</remarks>
+Machine name can be useful in webfarm enviroments where multiple servers are running the same app and the issues could be machine specific. However, You might want to disable this feature on client applications for privacy reasons.</remarks>
 
 
 ### Configuring the Client Using Configuration File ###
