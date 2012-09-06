@@ -81,6 +81,7 @@
   <ItemGroup>
     <None Include="NuGet\web.config.transform">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Exceptron.Client.nuspec">
       <SubType>Designer</SubType>
