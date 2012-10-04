@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Exceptron.Client.Message;
 using FizzWare.NBuilder;
@@ -20,6 +21,8 @@ namespace Exceptron.Client.Tests
         [DebuggerStepThrough]
         public void ClientTestSetup()
         {
+            Console.WriteLine("Client version: {0}", Assembly.GetExecutingAssembly().GetName().Version);
+            
             FakeExceptionData = Builder<ExceptionData>.CreateNew()
                 .With(c => c.Exception = GetThrownException(new TestException()))
                 .Build();
