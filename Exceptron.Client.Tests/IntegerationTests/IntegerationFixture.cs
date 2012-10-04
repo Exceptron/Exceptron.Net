@@ -18,11 +18,13 @@ namespace Exceptron.Client.Tests.IntegerationTests
             _exceptronClient = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey });
 
             _exceptronClient.Configuration.Host = "https://dev-api.exceptron.com/v1/";
-        
-            if(InTeamCity())
+
+            if (InTeamCity())
             {
                 _exceptronClient.Configuration.Host = Environment.GetEnvironmentVariable("ET.HostUrl");
             }
+
+            Console.WriteLine("Target Endpoint: {0}", _exceptronClient.Configuration.Host);
         }
 
 
@@ -44,7 +46,7 @@ namespace Exceptron.Client.Tests.IntegerationTests
 
             AssertFailedResponse<ExceptronApiException>(response);
 
-            AssertResponseCode(response,HttpStatusCode.BadRequest);
+            AssertResponseCode(response, HttpStatusCode.BadRequest);
         }
 
         [Test]
