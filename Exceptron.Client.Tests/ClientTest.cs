@@ -28,7 +28,7 @@ namespace Exceptron.Client.Tests
                 Trace.Listeners.Add(ConsoleTraceListener);
             }
 
-            Console.WriteLine("Client version: {0}", Assembly.GetExecutingAssembly().GetName().Version);
+            Console.WriteLine("Client version: {0}", typeof(ExceptronClient).Assembly.GetName().Version);
 
             FakeExceptionData = Builder<ExceptionData>.CreateNew()
                 .With(c => c.Exception = GetThrownException(new TestException()))
