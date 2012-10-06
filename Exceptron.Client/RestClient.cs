@@ -58,8 +58,14 @@ namespace Exceptron.Client
 
         public static string ReadResponse(WebResponse webResponse)
         {
-            var responseStream = new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding(1252));
-            return responseStream.ReadToEnd();
+            if (webResponse == null) return string.Empty;
+
+            var responseStream = webResponse.GetResponseStream();
+
+            if (responseStream == null) return string.Empty;
+            
+            var decodedStream = new StreamReader(responseStream, Encoding.GetEncoding(1252));
+            return decodedStream.ReadToEnd();
         }
     }
 }

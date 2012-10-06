@@ -11,7 +11,7 @@ namespace Exceptron.Client.Tests
 {
     public abstract class ClientTest
     {
-        protected const string Url = "https://api.exceptron.com/v1/";
+        protected const string Url = "http://localhost:57674/v1/";
         protected const string ApiKey = "9c95215de676416a96cbfbc20915839f";
 
 
@@ -63,9 +63,9 @@ namespace Exceptron.Client.Tests
         protected static void AssertSuccessfulResponse(ExceptionResponse response)
         {
             response.Should().NotBeNull();
-            response.Successful.Should().BeTrue();
-            response.RefId.Should().HaveLength(8);
-            response.Exception.Should().BeNull();
+            response.Successful.Should().BeTrue("API call failed");
+            response.RefId.Should().HaveLength(8, "Invalid RefId");
+            response.Exception.Should().BeNull("Exception object was not excepted");
         }
 
         protected static bool InTeamCity()
