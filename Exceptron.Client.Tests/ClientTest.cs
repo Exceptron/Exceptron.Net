@@ -63,9 +63,9 @@ namespace Exceptron.Client.Tests
         protected static void AssertSuccessfulResponse(ExceptionResponse response)
         {
             response.Should().NotBeNull();
-            response.Successful.Should().BeTrue("API call failed");
-            response.RefId.Should().HaveLength(8, "Invalid RefId");
-            response.Exception.Should().BeNull("Exception object was not excepted");
+            response.Successful.Should().BeTrue("ExceptionResponse.Successful");
+            response.RefId.Should().HaveLength(8, "ExceptionResponse.RefId");
+            response.Exception.Should().BeNull("ExceptionResponse.Exception");
         }
 
         protected static bool InTeamCity()
