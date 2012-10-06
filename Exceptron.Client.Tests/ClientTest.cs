@@ -11,7 +11,7 @@ namespace Exceptron.Client.Tests
 {
     public abstract class ClientTest
     {
-        protected const string Url = "http://localhost:57674/v1/";
+        protected const string Url = "https://api.exceptron.com/v1/";
         protected const string ApiKey = "9c95215de676416a96cbfbc20915839f";
 
 
