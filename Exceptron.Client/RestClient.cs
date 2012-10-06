@@ -46,6 +46,7 @@ namespace Exceptron.Client
             }
             catch (WebException e)
             {
+                Trace.WriteLine(e.ToString());
                 responseContent = ReadResponse(e.Response);
                 throw new ExceptronApiException(e, responseContent);
             }
