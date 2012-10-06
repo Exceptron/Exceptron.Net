@@ -79,9 +79,14 @@ namespace Exceptron.Client.Tests.IntegerationTests
         {
             response.Should().NotBeNull();
             response.Exception.Should().NotBeNull();
+            
             response.Exception.InnerException.Should().BeOfType<WebException>();
 
-            var httpResponse = ((WebException)response.Exception.InnerException).Response as HttpWebResponse;
+            var exceptionResponse = ((WebException) response.Exception.InnerException).Response;
+
+            exceptionResponse.Should().NotBeNull("WebException.Response");
+            var httpResponse = (HttpWebResponse)exceptionResponse;
+            
             httpResponse.StatusCode.Should().Be(statusCode);
         }
     }

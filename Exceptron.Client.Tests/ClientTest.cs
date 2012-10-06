@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Exceptron.Client.Message;
@@ -14,6 +15,7 @@ namespace Exceptron.Client.Tests
         protected const string Url = "https://api.exceptron.com/v1/";
         protected const string ApiKey = "9c95215de676416a96cbfbc20915839f";
 
+        static readonly ConsoleTraceListener ConsoleTraceListener = new ConsoleTraceListener(false);
 
         protected ExceptionData FakeExceptionData { get; set; }
 
@@ -21,8 +23,13 @@ namespace Exceptron.Client.Tests
         [DebuggerStepThrough]
         public void ClientTestSetup()
         {
+            if (InTeamCity() && !Trace.Listeners.Contains(ConsoleTraceListener))
+            {
+                Trace.Listeners.Add(ConsoleTraceListener);
+            }
+
             Console.WriteLine("Client version: {0}", Assembly.GetExecutingAssembly().GetName().Version);
-            
+
             FakeExceptionData = Builder<ExceptionData>.CreateNew()
                 .With(c => c.Exception = GetThrownException(new TestException()))
                 .Build();
@@ -54,10 +61,9 @@ namespace Exceptron.Client.Tests
         protected static void AssertFailedResponse<T>(ExceptionResponse response) where T : Exception
         {
             response.Should().NotBeNull();
+            response.Exception.Should().BeOfType<T>();
             response.RefId.Should().BeNull();
             response.Successful.Should().BeFalse();
-            response.Exception.Should().NotBeNull();
-            response.Exception.Should().BeOfType<T>();
         }
 
         protected static void AssertSuccessfulResponse(ExceptionResponse response)
