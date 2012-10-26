@@ -63,9 +63,12 @@ namespace Exceptron.Client
             if (exceptronConfiguration == null)
                 throw new ArgumentNullException("exceptronConfiguration");
 
+            if (applicationVersion == null)
+                throw new ArgumentNullException("applicationVersion");
+
             if (string.IsNullOrEmpty(exceptronConfiguration.ApiKey))
                 throw new ArgumentException("An API Key was not provided");
-
+            
             Configuration = exceptronConfiguration;
 
             RestClient = new RestClient();

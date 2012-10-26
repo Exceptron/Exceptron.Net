@@ -16,30 +16,4 @@
   <UseBuildConfiguration></UseBuildConfiguration>
   <ProxyProcessPath></ProxyProcessPath>
   <UseCPUArchitecture>AutoDetect</UseCPUArchitecture>
-  <IgnoredTests>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.ConfigurationTests\.ExceptronConfigurationFixture\..*</RegularExpression>
-    </RegexTestSelector>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.ExceptionClientTests\.ExceptionClient_FailureFixture\..*</RegularExpression>
-    </RegexTestSelector>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.ExceptionClientTests\.ExceptionClient_HttpExceptions\..*</RegularExpression>
-    </RegexTestSelector>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.ExceptionClientTests\.ExceptionClient_Privacy\..*</RegularExpression>
-    </RegexTestSelector>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.ExceptionClientTests\.ExceptionClient_SuccessFixture\..*</RegularExpression>
-    </RegexTestSelector>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.ExceptionClientTests\.ExceptionClientFixture_ConvertToFrames\..*</RegularExpression>
-    </RegexTestSelector>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.fastJSONTests\.JsonSerializerFixture\..*</RegularExpression>
-    </RegexTestSelector>
-    <RegexTestSelector>
-      <RegularExpression>Exceptron\.Client\.Tests\.RestClientTests\.RestClientFixture\..*</RegularExpression>
-    </RegexTestSelector>
-  </IgnoredTests>
 </ProjectConfiguration>

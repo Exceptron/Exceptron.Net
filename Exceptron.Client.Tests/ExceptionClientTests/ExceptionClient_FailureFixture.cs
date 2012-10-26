@@ -45,6 +45,12 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
         [Test]
         public void should_throw_if_configuration_is_null()
         {
+            Assert.Throws<ArgumentNullException>(() => new ExceptronClient(null, new Version()));
+        }
+
+        [Test]
+        public void should_throw_if_version_number_is_null()
+        {
             Assert.Throws<ArgumentNullException>(() => new ExceptronClient(null));
         }
 
