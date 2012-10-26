@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Exceptron.Client.Configuration;
 
 namespace Exceptron.Client.Sample
@@ -26,7 +27,7 @@ namespace Exceptron.Client.Sample
 
         private static ExceptronClient GetClientUsingConfigFile()
         {
-            return new ExceptronClient();
+            return new ExceptronClient(Assembly.GetExecutingAssembly().GetName().Version);
         }
          
         private static ExceptronClient GetClientConfiguredAtRuntime()
@@ -38,7 +39,7 @@ namespace Exceptron.Client.Sample
                 ThrowExceptions = true
             };
 
-            return new ExceptronClient(exceptronConfig);
+            return new ExceptronClient(exceptronConfig, Assembly.GetExecutingAssembly().GetName().Version);
         }
 
         private static int CallToBrokenMethod()

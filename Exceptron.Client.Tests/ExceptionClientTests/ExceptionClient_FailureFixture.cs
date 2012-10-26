@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Exceptron.Client.Configuration;
 using Exceptron.Client.Message;
 using Moq;
@@ -17,7 +18,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
         public void Setup()
         {
             _fakeRestClient = new Mock<IRestClient>();
-            _clinet = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
+            _clinet = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }, appVersion) { RestClient = _fakeRestClient.Object };
             _validException = new ExceptionData
                 {
                     Exception = new TestException(),
@@ -38,7 +39,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
                                              new ExceptronClient(new ExceptronConfiguration
                                                  {
                                                      ApiKey = apiKey
-                                                 }));
+                                                 }, appVersion));
         }
 
         [Test]

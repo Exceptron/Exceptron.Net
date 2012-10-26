@@ -18,7 +18,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
         public void Setup()
         {
             _fakeRestClient = new Mock<IRestClient>();
-            _client = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }) { RestClient = _fakeRestClient.Object };
+            _client = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }, appVersion) { RestClient = _fakeRestClient.Object };
         }
 
 
@@ -53,7 +53,7 @@ namespace Exceptron.Client.Tests.ExceptionClientTests
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.cmp == FakeExceptionData.Component)), Times.Once());
 
             _fakeRestClient
-                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.aver == _client.ApplicationVersion)), Times.Once());
+                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.aver == appVersion.ToString())), Times.Once());
 
             _fakeRestClient
                 .Verify(r => r.Put<ExceptionResponse>(It.IsAny<string>(), It.Is<ExceptionReport>(report => report.exm == FakeExceptionData.Exception.Message)), Times.Once());

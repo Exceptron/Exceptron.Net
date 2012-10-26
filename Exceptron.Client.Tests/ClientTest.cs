@@ -19,6 +19,9 @@ namespace Exceptron.Client.Tests
 
         protected ExceptionData FakeExceptionData { get; set; }
 
+
+        protected readonly Version appVersion = new Version(1,0,1,5);
+
         [SetUp]
         [DebuggerStepThrough]
         public void ClientTestSetup()

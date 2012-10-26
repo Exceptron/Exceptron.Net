@@ -15,7 +15,7 @@ namespace Exceptron.Client.Tests.IntegerationTests
         [SetUp]
         public void Setup()
         {
-            _exceptronClient = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey });
+            _exceptronClient = new ExceptronClient(new ExceptronConfiguration { ApiKey = ApiKey }, appVersion);
 
             _exceptronClient.Configuration.Host = "https://dev-api.exceptron.com/v1/";
 

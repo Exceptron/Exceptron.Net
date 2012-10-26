@@ -37,11 +37,6 @@ namespace Exceptron.Client
 
 
         /// <summary>
-        /// Version of application executing. Default: Version of <see cref="Assembly.GetEntryAssembly()"/>
-        /// </summary>
-        public string ApplicationVersion { get; set; }
-
-        /// <summary>
         /// Framework Type of the Host Application (.Net/mono)
         /// </summary>
         public string FrameworkType { get; set; }
@@ -50,14 +45,20 @@ namespace Exceptron.Client
         /// Creates a new instance of <see cref="ExceptronClient"/>
         /// Loads <see cref="ExceptronConfiguration"/> from application config file.
         /// </summary>
-        public ExceptronClient()
-            : this(ExceptronConfiguration.ReadConfig())
+        /// <param name="applicationVersion">Version of the currently running application</param>
+        public ExceptronClient(Version applicationVersion)
+            : this(ExceptronConfiguration.ReadConfig(), applicationVersion)
         {
             FrameworkType = ".Net";
         }
 
-        /// <param name="exceptronConfiguration">Exceptron client configuration</param>
-        public ExceptronClient(ExceptronConfiguration exceptronConfiguration)
+        private readonly string _applicationVersion;
+        private readonly string _maxFrameworkVersion;
+
+
+        /// <param name="exceptronConfiguration">exceptron client configuration</param>
+        /// <param name="applicationVersion"> </param>
+        public ExceptronClient(ExceptronConfiguration exceptronConfiguration, Version applicationVersion)
         {
             if (exceptronConfiguration == null)
                 throw new ArgumentNullException("exceptronConfiguration");
@@ -69,18 +70,21 @@ namespace Exceptron.Client
 
             RestClient = new RestClient();
 
-            SetApplicationVersion();
+            _applicationVersion = applicationVersion.ToString();
+
+            _maxFrameworkVersion = GetMaximumFrameworkVersion();
 
             FrameworkType = ".Net";
         }
 
         /// <summary>
-        /// Submit an exception to Exceptron Servers.
+        /// Submit an exception to exceptron Servers.
         /// </summary>
         /// <param name="exception">Exception that is being reported</param>
         /// <param name="component" 
         /// example="DataAccess, Configuration, Registration, etc." 
-        /// remarks="It is common to use the logger name that was used to log the exception as the component.">Component that experianced this exception.</param>
+        /// remarks="It is common to use the logger name that was used to log the exception as the component.">Component that experienced this exception.</param>
+
         /// <param name="severity">Severity of the exception being reported</param>
         /// <param name="message" 
         /// example="Something went wrong while checking for application updates.">Any message that should be attached to this exceptions</param>
@@ -93,7 +97,7 @@ namespace Exceptron.Client
         /// Timmy@aol.com
         /// 26437
         /// ">ID that will uniquely identify the user</param>
-        /// <param name="httpContext"><see cref="System.Web.HttpContext"/> in which the exception occured. If no <see cref="System.Web.HttpContext"/> is provided
+        /// <param name="httpContext"><see cref="System.Web.HttpContext"/> in which the exception occurred. If no <see cref="System.Web.HttpContext"/> is provided
         /// <see cref="ExceptronClient"/> will try to get the current <see cref="System.Web.HttpContext"/> from <see cref="System.Web.HttpContext.Current"/></param>
         /// <returns></returns>
         public ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity = ExceptionSeverity.None, string message = null, string userId = null, HttpContext httpContext = null)
@@ -112,7 +116,7 @@ namespace Exceptron.Client
         }
 
         /// <summary>
-        /// Submit an exception to Exceptron Servers.
+        /// Submit an exception to exceptron Servers.
         /// </summary>
         /// <param name="exceptionData">Exception data to be reported to the server</param>
         public ExceptionResponse SubmitException(ExceptionData exceptionData)
@@ -126,7 +130,7 @@ namespace Exceptron.Client
                 report.ap = Configuration.ApiKey;
                 report.dn = ClientName;
                 report.dv = ClientVersion;
-                report.aver = ApplicationVersion;
+                report.aver = _applicationVersion;
 
                 report.ext = exceptionData.Exception.GetType().FullName;
                 report.stk = ConvertToFrames(exceptionData.Exception);
@@ -136,7 +140,7 @@ namespace Exceptron.Client
                 report.uid = exceptionData.UserId;
                 report.msg = exceptionData.Message;
                 report.sv = (int)exceptionData.Severity;
-                report.fv = GetMaximumFrameworkVersion();
+                report.fv = _maxFrameworkVersion;
                 report.ft = FrameworkType;
 
                 SetHttpInfo(exceptionData, report);
@@ -225,42 +229,6 @@ namespace Exceptron.Client
             {
                 if (Configuration.ThrowExceptions) throw;
             }
-        }
-
-        private void SetApplicationVersion()
-        {
-            try
-            {
-                var entryAssembly = GetWebEntryAssembly() ?? Assembly.GetEntryAssembly();
-
-                if (entryAssembly == null)
-                {
-                    entryAssembly = Assembly.GetCallingAssembly();
-                }
-
-                ApplicationVersion = entryAssembly.GetName().Version.ToString();
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine("Can't figure out application version.", e.ToString());
-            }
-        }
-
-        static private Assembly GetWebEntryAssembly()
-        {
-            if (HttpContext.Current == null ||
-                HttpContext.Current.ApplicationInstance == null)
-            {
-                return null;
-            }
-
-            var type = HttpContext.Current.ApplicationInstance.GetType();
-            while (type != null && type.Namespace == "ASP")
-            {
-                type = type.BaseType;
-            }
-
-            return type == null ? null : type.Assembly;
         }
 
         internal static List<Frame> ConvertToFrames(Exception exception)

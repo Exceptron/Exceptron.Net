@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Web;
 using Exceptron.Client.Configuration;
 using Exceptron.Client.Message;
@@ -14,23 +13,18 @@ namespace Exceptron.Client
         ExceptronConfiguration Configuration { get; }
 
         /// <summary>
-        /// Version of application executing. Default: Version of <see cref="Assembly.GetEntryAssembly()"/>
-        /// </summary>
-        string ApplicationVersion { get; set; }
-
-        /// <summary>
-        /// Submit an exception to Exceptron Servers.
+        /// Submit an exception to exceptron Servers.
         /// </summary>
         /// <param name="exceptionData">Exception data to be reported to the server</param>
         ExceptionResponse SubmitException(ExceptionData exceptionData);
 
         /// <summary>
-        /// Submit an exception to Exceptron Servers.
+        /// Submit an exception to exceptron Servers.
         /// </summary>
         /// <param name="exception">Exception that is being reported</param>
         /// <param name="component" 
         /// example="DataAccess, Configuration, Registration, etc." 
-        /// remarks="It is common to use the logger name that was used to log the exception as the component.">Component that experianced this exception.</param>
+        /// remarks="It is common to use the logger name that was used to log the exception as the component.">Component that experienced this exception.</param>
         /// <param name="severity">Severity of the exception being reported</param>
         /// <param name="message" 
         /// example="Something went wrong while checking for application updates.">Any message that should be attached to this exceptions</param>
@@ -43,7 +37,7 @@ namespace Exceptron.Client
         /// Timmy@aol.com
         /// 26437
         /// ">ID that will uniquely identify the user</param>
-        /// <param name="httpContext"><see cref="System.Web.HttpContext"/> in which the exception occured. If no <see cref="System.Web.HttpContext"/> is provided
+        /// <param name="httpContext"><see cref="System.Web.HttpContext"/> in which the exception occurred. If no <see cref="System.Web.HttpContext"/> is provided
         /// <see cref="ExceptronClient"/> will try to get the current <see cref="System.Web.HttpContext"/> from <see cref="System.Web.HttpContext.Current"/></param>
         /// <returns></returns>
         ExceptionResponse SubmitException(Exception exception, string component, ExceptionSeverity severity = ExceptionSeverity.None, string message = null, string userId = null, HttpContext httpContext = null);
